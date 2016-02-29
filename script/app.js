@@ -5,8 +5,8 @@
         this.ip = '10.13.99.69',
         this.porta = '20081',
         this.escrita = '0',
-        this.leitura_um = '0',
-        this.leitura_dois = '1',
+        this.leitura_um = {"id":"0","name":"Canal 0"},
+        this.leitura_dois = {"id":"1","name":"Canal 1"},
         this.onda = {
             amp : 0,
             amp_sup : 0,
@@ -16,6 +16,33 @@
             periodo_inf : 0,
             offset : 0
         };
+
+        this.canal_selected = [false, false, false, false, false, false, false, false];
+
+        this.getOptions = function () {
+            var selectedOptions = [ ];
+            for (var i = 0; i < this.canal_selected.length; i++) {
+                if (this.canal_selected[i] && i != this.leitura_dois.id) {
+                    selectedOptions.push({id : i, opt : "Canal " + i});
+                }
+            }
+            return selectedOptions;
+        }
+
+        this.getOptions2 = function () {
+            var selectedOptions = [ ];
+            for (var i = 0; i < this.canal_selected.length; i++) {
+                if (this.canal_selected[i] && i != this.leitura_um.id) {
+                    selectedOptions.push({id : i, opt : "Canal " + i});
+                }
+            }
+            return selectedOptions;
+        }
+
+        this.canalIsSelected = function (canal) {
+            return canal_selected[canal];
+        }
+
     });
 
     app.controller('CtrlConfigController' ,function () {

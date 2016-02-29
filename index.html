@@ -29,6 +29,26 @@
                     <option value="7">Canal 7</option>
                 </select>
 
+                <label for="check_leitura">Leitura: </label>
+
+
+                <input type="checkbox" name="canal_0" ng-model="ctrl.canal_selected[0]">
+                <label for="canal_0">Canal 0</label>
+                <input type="checkbox" name="canal_1" ng-model="ctrl.canal_selected[1]">
+                <label for="canal_1">Canal 1</label>
+                <input type="checkbox" name="canal_2" ng-model="ctrl.canal_selected[2]">
+                <label for="canal_2">Canal 2</label>
+                <input type="checkbox" name="canal_3" ng-model="ctrl.canal_selected[3]">
+                <label for="canal_3">Canal 3</label>
+                <input type="checkbox" name="canal_4" ng-model="ctrl.canal_selected[4]">
+                <label for="canal_4">Canal 4</label>
+                <input type="checkbox" name="canal_5" ng-model="ctrl.canal_selected[5]">
+                <label for="canal_5">Canal 5</label>
+                <input type="checkbox" name="canal_6" ng-model="ctrl.canal_selected[6]">
+                <label for="canal_6">Canal 6</label>
+                <input type="checkbox" name="canal_7" ng-model="ctrl.canal_selected[7]">
+                <label for="canal_7">Canal 7</label>
+
                 <input id="btn_connect" type="button" value="Conectar" />
             </div>
             <div id="div_login" class="align_right">
@@ -91,12 +111,14 @@
                     </div>
 
                     <div id="div_ctrl" class="align_left">
-                        <label for="ma_sel_nivel_um">Nivel 1:</label>
-                        <select class="" name="ma_sel_nivel_um">
+                        <label for="sel_nivel_um">Nivel 1:</label>
+                        <select class="" name="sel_nivel_um"  ng-model="ctrl.leitura_um"
+                            ng-options="c.opt for c in ctrl.getOptions() track by c.id">
                         </select>
 
-                        <label for="ma_sel_nivel_dois">Nivel 2:</label>
-                        <select class="" name="ma_sel_nivel_dois">
+                        <label for="sel_nivel_dois">Nivel 2:</label>
+                        <select class="" name="sel_nivel_dois" ng-model="ctrl.leitura_dois"
+                            ng-options="c.opt for c in ctrl.getOptions2() track by c.id">
                         </select>
 
                         <div id="div_conf_pid" ng-show="ctrlConfig.isCtrlSelected(2)" class="">
