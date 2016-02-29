@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html ng-app="controle">
+    <head>
+        <meta charset="utf-8">
+        <title>Druznic</title>
+        <link rel="stylesheet" type="text/css" href="css/main-style.css">
+
+        <script src="script/jquery-1.12.1.min.js"></script>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+    </head>
+    <body>
+        <div id="div_body" class="">
+            <div id="div_conf_connect"class="">
+                <input id="btn_connect" type="button" value="Conectar" />
+            </div>
+            <div id="div_login" class="align_right">
+                <input id="btn_open_connect" type="button" value="Desconectado" />
+            </div>
+
+            <section ng-controller="CtrlConfigController as ctrlConfig">
+                 <div id="div_sel_menu" class="align_center">
+                    <input ng-click="ctrlConfig.selectCtrl(0)" class="controle" type="button" value="Malha aberta" />
+                    <input ng-click="ctrlConfig.selectCtrl(1)" class="controle" type="button" value="Malha fechada" />
+                    <input ng-click="ctrlConfig.selectCtrl(2)" class="controle" type="button" value="PID" />
+                    <input ng-click="ctrlConfig.selectCtrl(3)" class="controle" type="button" value="PID cascata" />
+                    <input ng-click="ctrlConfig.selectCtrl(4)" class="controle" type="button" value="Observador de estados" />
+                    <input ng-click="ctrlConfig.selectCtrl(5)" class="controle" type="button" value="Seguidor de referência" />
+                </div>
+                <div id="div_menu" class="align_center">
+                    <div id="div_onda" ng-controller="OndaConfigController as ondaConfig" class="align_right">
+                        <form class="" action="index.html" method="post">
+                            Tipo de onda:
+                            <select class="" ng-model="ondaConfig.onda" name="ondas">
+                                <option value="0">Degrau</option>
+                                <option value="1">Senoidal</option>
+                                <option value="2">Quadrada</option>
+                                <option value="3">Dente de Serra</option>
+                                <option value="4">Aleatória</option>
+                            </select>
+
+                            <div id="div_onda_degrau" ng-show="ondaConfig.isOndaSelected('0')" class="">
+                                Degrau
+                            </div>
+
+                            <div id="div_onda_periodica"
+                                    ng-show="ondaConfig.isOndaSelected('1') || ondaConfig.isOndaSelected('2') || ondaConfig.isOndaSelected('3')"
+                                    class="">
+                                Onda periodica
+                            </div>
+
+                            <div id="div_onda_aleatoria" ng-show="ondaConfig.isOndaSelected('4')" class="">
+                                Aleatória
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="div_ctrl" class="align_left">
+                        <div id="div_conf_ma" ng-show="ctrlConfig.isCtrlSelected(0)" class="">
+                            Malha Aberta
+                        </div>
+                        <div id="div_conf_mf" ng-show="ctrlConfig.isCtrlSelected(1)" class="">
+                            Malha Fechada
+                        </div>
+                        <div id="div_conf_pid" ng-show="ctrlConfig.isCtrlSelected(2)" class="">
+                            PID
+                        </div>
+                        <div id="div_conf_pidc" ng-show="ctrlConfig.isCtrlSelected(3)" class="">
+                            PID cascata
+                        </div>
+                        <div id="div_oe" ng-show="ctrlConfig.isCtrlSelected(4)" class="">
+                            Observador de Estados
+                        </div>
+                        <div id="div_sr" ng-show="ctrlConfig.isCtrlSelected(5)" class="">
+                            Seguidor de referência
+                        </div>
+                    </div>
+                    <div id="div_enviar" class="">
+                        <input type="button" name="name" value="Enviar">
+                    </div>
+                </div>
+            </section>
+
+            <div id="div_content" class="" >
+                <div id="div_chart_um" class="" style="min-width: 310px; height:200px; margin: 0 auto">
+
+                </div>
+                <div id="div_chart_dois" class="" style="min-width: 310px; height:200px; margin: 0 auto"  >
+
+                </div>
+            </div>
+
+            <div id="div_rodape" class="align_right">
+                <input type="button" value="Secar Tanque" />
+            </div>
+
+        </div>
+        <script src="script/angular.min.js"></script>
+        <script src="script/app.js"></script>
+    </body>
+</html>

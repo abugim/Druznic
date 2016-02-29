@@ -1,0 +1,78 @@
+div {
+
+}
+
+html,body { height: 100%; margin: 0px; padding: 0px; }
+
+#div_body {
+    background-color: lightblue;
+    height: 100%;
+}
+
+#div_login {
+
+}
+
+.align_center {
+    text-align: center;
+}
+.align_right {
+    text-align: right;
+}
+.align_left {
+    text-align: left;
+}
+
+#div_conf_connect {
+    position: absolute;
+    display: none;
+    right: 0px;
+    height: 100%;
+    width: 100px;
+    background-color: red;
+    z-index: 90;
+}
+
+#div_sel_menu {
+}
+
+#div_menu {
+    background-color: #823892;
+    position: absolute;
+    z-index: 89;
+    width: 100%;
+    display: none;
+}
+
+#div_onda {
+    background-color: gray;
+    float: left;
+    width: 50%;
+    height: 100%;
+}
+
+#div_ctrl {
+    background-color: lightgray;
+    float: right;
+    width: 50%;
+    height: 100%;
+}
+
+#div_enviar{
+    clear: both;
+}
+
+#div_content {
+}
+
+#div_char_um {
+
+}
+
+#div_chart_dois {
+
+}
+
+#div_rodape{
+
+}
