@@ -9,8 +9,26 @@
         <script src="https://code.highcharts.com/highcharts.js"></script>
     </head>
     <body>
-        <div id="div_body" class="">
-            <div id="div_conf_connect"class="">
+        <div id="div_body" ng-controller="CtrlController as ctrl" class="">
+            <div id="div_conf_connect" class="align_center">
+                <label for="ma_sel_nivel_um">IP: </label>
+                <input type="text" name="ip" ng-model="ctrl.ip">
+
+                <label for="ma_sel_nivel_dois">Porta: </label>
+                <input type="text" name="porta" ng-model="ctrl.porta">
+
+                <label for="sel_escrita">Canal escrita: </label>
+                <select ng-model="ctrl.escrita" class="" name="sel_esctria">
+                    <option value="0">Canal 0</option>
+                    <option value="1">Canal 1</option>
+                    <option value="2">Canal 2</option>
+                    <option value="3">Canal 3</option>
+                    <option value="4">Canal 4</option>
+                    <option value="5">Canal 5</option>
+                    <option value="6">Canal 6</option>
+                    <option value="7">Canal 7</option>
+                </select>
+
                 <input id="btn_connect" type="button" value="Conectar" />
             </div>
             <div id="div_login" class="align_right">
@@ -39,28 +57,48 @@
                             </select>
 
                             <div id="div_onda_degrau" ng-show="ondaConfig.isOndaSelected('0')" class="">
-                                Degrau
+                                <label for="degrau_amp">Amplitude</label>
+                                <input ng-model="controle.onda.amp"type="text" name="degrau_amp" value="">
                             </div>
 
                             <div id="div_onda_periodica"
                                     ng-show="ondaConfig.isOndaSelected('1') || ondaConfig.isOndaSelected('2') || ondaConfig.isOndaSelected('3')"
                                     class="">
-                                Onda periodica
+                                    <label for="periodica_amp">Amplitude: </label>
+                                    <input ng-model="controle.onda.amp"type="text" name="periodica_amp" value="">
+
+                                    <label for="periodica_periodo">Periodo: </label>
+                                    <input ng-model="controle.onda.periodo"type="text" name="periodica_periodo" value="">
+
+                                    <label for="periodica_offset">Offset: </label>
+                                    <input ng-model="controle.onda.offset"type="text" name="periodica_offset" value="">
                             </div>
 
                             <div id="div_onda_aleatoria" ng-show="ondaConfig.isOndaSelected('4')" class="">
-                                Aleatória
+                                <label for="aleatoria_amp_sup">Amplitude superior: </label>
+                                <input ng-model="controle.onda.amp_sup"type="text" name="aleatoria_amp_sup" value="">
+
+                                <label for="aleatoria_amp_inf">Amplitude inferior: </label>
+                                <input ng-model="controle.onda.amp_inf"type="text" name="aleatoria_amp_inf" value="">
+
+                                <label for="aleatoria_periodo_sup">Periodo superior: </label>
+                                <input ng-model="controle.onda.periodo_sup"type="text" name="aleatoria_periodo_sup" value="">
+
+                                <label for="aleatoria_periodo_inf">Periodo inferior: </label>
+                                <input ng-model="controle.onda.periodo_inf"type="text" name="aleatoria_periodo_inf" value="">
                             </div>
                         </form>
                     </div>
 
                     <div id="div_ctrl" class="align_left">
-                        <div id="div_conf_ma" ng-show="ctrlConfig.isCtrlSelected(0)" class="">
-                            Malha Aberta
-                        </div>
-                        <div id="div_conf_mf" ng-show="ctrlConfig.isCtrlSelected(1)" class="">
-                            Malha Fechada
-                        </div>
+                        <label for="ma_sel_nivel_um">Nivel 1:</label>
+                        <select class="" name="ma_sel_nivel_um">
+                        </select>
+
+                        <label for="ma_sel_nivel_dois">Nivel 2:</label>
+                        <select class="" name="ma_sel_nivel_dois">
+                        </select>
+
                         <div id="div_conf_pid" ng-show="ctrlConfig.isCtrlSelected(2)" class="">
                             PID
                         </div>

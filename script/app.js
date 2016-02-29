@@ -1,6 +1,23 @@
 (function () {
     var app = angular.module('controle', [ ]);
 
+    app.controller('CtrlController', function () {
+        this.ip = '10.13.99.69',
+        this.porta = '20081',
+        this.escrita = '0',
+        this.leitura_um = '0',
+        this.leitura_dois = '1',
+        this.onda = {
+            amp : 0,
+            amp_sup : 0,
+            amp_inf : 0,
+            periodo : 0,
+            periodo_sup : 0,
+            periodo_inf : 0,
+            offset : 0
+        };
+    });
+
     app.controller('CtrlConfigController' ,function () {
         this.selectCtrl = function (ctrlOpt) {
             this.ctrl = ctrlOpt;
