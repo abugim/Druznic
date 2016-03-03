@@ -4,59 +4,68 @@
         <meta charset="utf-8">
         <title>Druznic</title>
         <link rel="stylesheet" type="text/css" href="css/main-style.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 
         <script src="script/jquery-1.12.1.min.js"></script>
         <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/boost.js"></script>
     </head>
     <body>
-        <div id="div_body" ng-controller="CtrlController as ctrl" class="">
-            <div id="div_conf_connect" class="align_center">
-                <label for="ma_sel_nivel_um">IP: </label>
-                <input type="text" name="ip" ng-model="ctrl.ip">
+        <div id="div_body" class="">
+            <section ng-controller="ConexaoController as conexaoParam">
+                <div id="div_conf_connect" class="align_center">
+                    <fieldset>
+                        <legend>Configurações de conexão</legend>
+                        <form class="form-horizontal" role="form">
 
-                <label for="ma_sel_nivel_dois">Porta: </label>
-                <input type="text" name="porta" ng-model="ctrl.porta">
+                            <label for="ip">IP: </label>
+                            <input type="text" name="ip" ng-model="conexaoParam.ip">
 
-                <label for="sel_escrita">Canal escrita: </label>
-                <select ng-model="ctrl.escrita" class="" name="sel_esctria">
-                    <option value="0">Canal 0</option>
-                    <option value="1">Canal 1</option>
-                    <option value="2">Canal 2</option>
-                    <option value="3">Canal 3</option>
-                    <option value="4">Canal 4</option>
-                    <option value="5">Canal 5</option>
-                    <option value="6">Canal 6</option>
-                    <option value="7">Canal 7</option>
-                </select>
+                            <label for="porta">Porta: </label>
+                            <input type="text" name="porta" ng-model="conexaoParam.porta">
 
-                <label for="check_leitura">Leitura: </label>
+                            <label for="sel_escrita">Canal escrita: </label>
+                            <select ng-model="conexaoParam.escrita" class="" name="sel_esctria">
+                                <option value="0">Canal 0</option>
+                                <option value="1">Canal 1</option>
+                                <option value="2">Canal 2</option>
+                                <option value="3">Canal 3</option>
+                                <option value="4">Canal 4</option>
+                                <option value="5">Canal 5</option>
+                                <option value="6">Canal 6</option>
+                                <option value="7">Canal 7</option>
+                            </select>
+                            <label for="check_leitura">Leitura: </label>
 
 
-                <input type="checkbox" name="canal_0" ng-model="ctrl.canal_selected[0]">
-                <label for="canal_0">Canal 0</label>
-                <input type="checkbox" name="canal_1" ng-model="ctrl.canal_selected[1]">
-                <label for="canal_1">Canal 1</label>
-                <input type="checkbox" name="canal_2" ng-model="ctrl.canal_selected[2]">
-                <label for="canal_2">Canal 2</label>
-                <input type="checkbox" name="canal_3" ng-model="ctrl.canal_selected[3]">
-                <label for="canal_3">Canal 3</label>
-                <input type="checkbox" name="canal_4" ng-model="ctrl.canal_selected[4]">
-                <label for="canal_4">Canal 4</label>
-                <input type="checkbox" name="canal_5" ng-model="ctrl.canal_selected[5]">
-                <label for="canal_5">Canal 5</label>
-                <input type="checkbox" name="canal_6" ng-model="ctrl.canal_selected[6]">
-                <label for="canal_6">Canal 6</label>
-                <input type="checkbox" name="canal_7" ng-model="ctrl.canal_selected[7]">
-                <label for="canal_7">Canal 7</label>
+                            <input type="checkbox" name="canal_0" ng-model="conexaoParam.canal_selected[0]">
+                            <label for="canal_0">Canal 0</label>
+                            <input type="checkbox" name="canal_1" ng-model="conexaoParam.canal_selected[1]">
+                            <label for="canal_1">Canal 1</label>
+                            <input type="checkbox" name="canal_2" ng-model="conexaoParam.canal_selected[2]">
+                            <label for="canal_2">Canal 2</label>
+                            <input type="checkbox" name="canal_3" ng-model="conexaoParam.canal_selected[3]">
+                            <label for="canal_3">Canal 3</label>
+                            <input type="checkbox" name="canal_4" ng-model="conexaoParam.canal_selected[4]">
+                            <label for="canal_4">Canal 4</label>
+                            <input type="checkbox" name="canal_5" ng-model="conexaoParam.canal_selected[5]">
+                            <label for="canal_5">Canal 5</label>
+                            <input type="checkbox" name="canal_6" ng-model="conexaoParam.canal_selected[6]">
+                            <label for="canal_6">Canal 6</label>
+                            <input type="checkbox" name="canal_7" ng-model="conexaoParam.canal_selected[7]">
+                            <label for="canal_7">Canal 7</label>
 
-                <input id="btn_connect" type="button" value="Conectar" />
-            </div>
-            <div id="div_login" class="align_right">
-                <input id="btn_open_connect" type="button" value="Desconectado" />
-            </div>
+                            <input id="btn_connect" ng-click="conexaoParam.conectar()" type="button" value="Conectar" />
+                        </form>
+                    </fieldset>
+                </div>
+                <div id="div_login" class="align_right">
+                    <input id="btn_open_connect" type="button" value="{{conexaoParam.status}}" />
+                </div>
+            </section>
 
             <section ng-controller="CtrlConfigController as ctrlConfig">
-                 <div id="div_sel_menu" class="align_center">
+                <div id="div_sel_menu" class="align_center">
                     <input ng-click="ctrlConfig.selectCtrl(0)" class="controle" type="button" value="Malha aberta" />
                     <input ng-click="ctrlConfig.selectCtrl(1)" class="controle" type="button" value="Malha fechada" />
                     <input ng-click="ctrlConfig.selectCtrl(2)" class="controle" type="button" value="PID" />
@@ -67,8 +76,8 @@
                 <div id="div_menu" class="align_center">
                     <div id="div_onda" ng-controller="OndaConfigController as ondaConfig" class="align_right">
                         <form class="" action="index.html" method="post">
-                            Tipo de onda:
-                            <select class="" ng-model="ondaConfig.onda" name="ondas">
+                            <label for="ondas">Tipo de onda: </label>
+                            <select class="" ng-model="ondaConfig.onda.tipo" ng-change="ondaConfig.limparForm()" name="ondas">
                                 <option value="0">Degrau</option>
                                 <option value="1">Senoidal</option>
                                 <option value="2">Quadrada</option>
@@ -77,53 +86,97 @@
                             </select>
 
                             <div id="div_onda_degrau" ng-show="ondaConfig.isOndaSelected('0')" class="">
-                                <label for="degrau_amp">Amplitude</label>
-                                <input ng-model="controle.onda.amp"type="text" name="degrau_amp" value="">
+                                <label for="degrau_amp">Amplitude: </label>
+                                <input ng-model="ctrlConfig.onda.amp"type="text" name="degrau_amp" value="">
+                                <br>
                             </div>
 
                             <div id="div_onda_periodica"
                                     ng-show="ondaConfig.isOndaSelected('1') || ondaConfig.isOndaSelected('2') || ondaConfig.isOndaSelected('3')"
                                     class="">
                                     <label for="periodica_amp">Amplitude: </label>
-                                    <input ng-model="controle.onda.amp"type="text" name="periodica_amp" value="">
+                                    <input ng-model="ctrlConfig.onda.amp"type="text" name="periodica_amp" value="">
+
+                                    <br>
 
                                     <label for="periodica_periodo">Periodo: </label>
-                                    <input ng-model="controle.onda.periodo"type="text" name="periodica_periodo" value="">
+                                    <input ng-model="ctrlConfig.onda.periodo"type="text" name="periodica_periodo" value="">
+
+                                    <br>
 
                                     <label for="periodica_offset">Offset: </label>
-                                    <input ng-model="controle.onda.offset"type="text" name="periodica_offset" value="">
+                                    <input ng-model="ctrlConfig.onda.offset"type="text" name="periodica_offset" value="">
+                                    <br>
                             </div>
 
                             <div id="div_onda_aleatoria" ng-show="ondaConfig.isOndaSelected('4')" class="">
+
                                 <label for="aleatoria_amp_sup">Amplitude superior: </label>
-                                <input ng-model="controle.onda.amp_sup"type="text" name="aleatoria_amp_sup" value="">
-
+                                <input ng-model="ctrlConfig.onda.amp_sup"type="text" name="aleatoria_amp_sup" value="">
+                                <br>
                                 <label for="aleatoria_amp_inf">Amplitude inferior: </label>
-                                <input ng-model="controle.onda.amp_inf"type="text" name="aleatoria_amp_inf" value="">
-
+                                <input ng-model="ctrlConfig.onda.amp_inf"type="text" name="aleatoria_amp_inf" value="">
+                                <br>
                                 <label for="aleatoria_periodo_sup">Periodo superior: </label>
-                                <input ng-model="controle.onda.periodo_sup"type="text" name="aleatoria_periodo_sup" value="">
-
+                                <input ng-model="ctrlConfig.onda.periodo_sup"type="text" name="aleatoria_periodo_sup" value="">
+                                <br>
                                 <label for="aleatoria_periodo_inf">Periodo inferior: </label>
-                                <input ng-model="controle.onda.periodo_inf"type="text" name="aleatoria_periodo_inf" value="">
+                                <input ng-model="ctrlConfig.onda.periodo_inf"type="text" name="aleatoria_periodo_inf" value="">
+                                <br>
                             </div>
                         </form>
                     </div>
 
                     <div id="div_ctrl" class="align_left">
                         <label for="sel_nivel_um">Nivel 1:</label>
-                        <select class="" name="sel_nivel_um"  ng-model="ctrl.leitura_um"
-                            ng-options="c.opt for c in ctrl.getOptions() track by c.id">
+                        <select class="" name="sel_nivel_um"  ng-model="ctrlConfig.leitura_um"
+                            ng-options="c.opt for c in ctrlConfig.getOptions() track by c.id">
                         </select>
 
                         <label for="sel_nivel_dois">Nivel 2:</label>
-                        <select class="" name="sel_nivel_dois" ng-model="ctrl.leitura_dois"
-                            ng-options="c.opt for c in ctrl.getOptions2() track by c.id">
+                        <select class="" name="sel_nivel_dois" ng-model="ctrlConfig.leitura_dois"
+                            ng-options="c.opt for c in ctrlConfig.getOptions2() track by c.id">
                         </select>
 
-                        <div id="div_conf_pid" ng-show="ctrlConfig.isCtrlSelected(2)" class="">
-                            PID
+                        <div id="div_conf_pid" ng-show="ctrlConfig.isCtrlSelected(2)"
+                            ng-controller="PIDConfigController as pidConfig" class="">
+
+                            <label for="select_pid">Tipo: </label>
+                            <select class="" name="select_pid" ng-model="pidConfig.pidParam.pid_selected"
+                                ng-change="pidConfig.limparForm()">
+                                <option value="0">P</option>
+                                <option value="1">PI</option>
+                                <option value="2">PD</option>
+                                <option value="3">PID</option>
+                                <option value="4">PI-D</option>
+                            </select>
+                            <br>
+
+                            <label for="kp">KP: </label>
+                            <input type="text" name="kp" ng-model="pidConfig.pidParam.kp" value=""/>
+                            <br>
+                            <div ng-hide="pidConfig.isPIDSelected('0') || pidConfig.isPIDSelected('2')">
+                                <label for="ki">KI:</label>
+                                <input type="text" name="ki" ng-model="pidConfig.pidParam.ki" value=""/>
+                                <label for="ti">TI:</label>
+                                <input type="text" name="ti" ng-model="pidConfig.pidParam.ti" value=""/>
+                                <br>
+                            </div>
+
+                            <div ng-hide="pidConfig.isPIDSelected('0') || pidConfig.isPIDSelected('1')">
+                                <label for="kd">KD:</label>
+                                <input type="text" name="kd" ng-model="pidConfig.pidParam.kd" value=""/>
+                                <label for="td">TD:</label>
+                                <input type="text" name="td" ng-model="pidConfig.pidParam.td"value=""/>
+                                <br>
+                            </div>
+
+                            <input type="checkbox" name="chk_wind_up" value="false">
+                            <label for="chk_wind_up">wind-up</label>
+                            <input type="checkbox" name="chk_outro_f" value="false">
+                            <label for="chk_outro_f">outro-f</label>
                         </div>
+
                         <div id="div_conf_pidc" ng-show="ctrlConfig.isCtrlSelected(3)" class="">
                             PID cascata
                         </div>
@@ -135,23 +188,23 @@
                         </div>
                     </div>
                     <div id="div_enviar" class="">
-                        <input type="button" name="name" value="Enviar">
+                        <input type="button" name=Pame" ng-click="ctrlConfig.enviar()" value="Enviar">
                     </div>
                 </div>
+
+                <div id="div_content" class="" >
+                    <div id="div_chart_um" class="" style="min-width: 310px; height:200px; margin: 0 auto">
+
+                    </div>
+                    <div id="div_chart_dois" class="" style="min-width: 310px; height:200px; margin: 0 auto"  >
+
+                    </div>
+                </div>
+
+                <div id="div_rodape" class="align_right">
+                    <input type="button" ng-click="ctrlConfig.secarTanque()" value="Secar Tanque" />
+                </div>
             </section>
-
-            <div id="div_content" class="" >
-                <div id="div_chart_um" class="" style="min-width: 310px; height:200px; margin: 0 auto">
-
-                </div>
-                <div id="div_chart_dois" class="" style="min-width: 310px; height:200px; margin: 0 auto"  >
-
-                </div>
-            </div>
-
-            <div id="div_rodape" class="align_right">
-                <input type="button" value="Secar Tanque" />
-            </div>
 
         </div>
         <script src="script/angular.min.js"></script>
