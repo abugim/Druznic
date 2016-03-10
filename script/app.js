@@ -573,18 +573,21 @@
         }
 
         this.enviar = function() {
-            var msg = '2 ' + this.leitura_um.id + ' ' + this.leitura_dois.id + ' ' + ConexaoParam.escrita;
+            var msg = '2 ' + this.leitura_um.id +
+                        ' ' + this.leitura_dois.id +
+                        ' ' + ConexaoParam.escrita;
+
             for (var param in this.onda) {
                 if (this.onda.hasOwnProperty(param)) {
                     msg += ' ' + this.onda[param];
                 }
             }
 
-            for (var param in this.ctrl_param) {
-                if (this.ctrl_param.hasOwnProperty(param)) {
-                    msg += ' ' + this.ctrl_param[param];
-                }
-            }
+            // for (var param in this.ctrl_param) {
+            //     if (this.ctrl_param.hasOwnProperty(param)) {
+            //         msg += ' ' + this.ctrl_param[param];
+            //     }
+            // }
             // Configurar series
             chartControle = $('#div_chart_um').highcharts();
             while (chartControle.series.length) {
@@ -596,6 +599,7 @@
                 chartNivel.series[0].remove();
             }
 
+            msg += ' ' + this.ctrl_param.tipo_ctrl;
             switch (this.ctrl_param.tipo_ctrl) {
                 case 0:
                     setMA();
@@ -604,10 +608,10 @@
                     setMF();
                     break;
                 case 2:
-                    this.ctrl_param.params = '' + PIDParam.kp +
+                    this.ctrl_param.params = ' ' + PIDParam.kp +
                         ' ' + PIDParam.ki +
                         ' ' + PIDParam.kd +
-                        ' ' + (PIDParam.pid_selected == 4 ? 1 : 0)
+                        ' ' + (PIDParam.pid_selected == 4 ? 1 : 0) +
                         ' ' + (this.filtro());
                     setPID();
                     break;
