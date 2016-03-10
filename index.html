@@ -7,8 +7,8 @@
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 
         <script src="script/jquery-1.12.1.min.js"></script>
-        <script src="https://code.highcharts.com/highcharts.js"></script>
-        <script src="https://code.highcharts.com/modules/boost.js"></script>
+        <script src="script/Highcharts-4.2.3/js/highcharts.js"></script>
+        <script src="script/Highcharts-4.2.3/js/modules/boost.js"></script>
     </head>
     <body>
         <div id="div_body" class="">
@@ -171,10 +171,10 @@
                                 <br>
                             </div>
 
-                            <input type="checkbox" name="chk_wind_up" value="false">
-                            <label for="chk_wind_up">wind-up</label>
-                            <input type="checkbox" name="chk_outro_f" value="false">
-                            <label for="chk_outro_f">outro-f</label>
+                            <input type="radio" name="chk_filtro" value="false" ng-model="ctrlConfig.filtro_back">
+                            <label for="chk_wind_up">Back-calculation</label>
+                            <input type="radio" name="chk_filtro" value="false" ng-model="ctrlConfig.filtro_cond">
+                            <label for="chk_outro_f">Condicional</label>
                         </div>
 
                         <div id="div_conf_pidc" ng-show="ctrlConfig.isCtrlSelected(3)" class="">
@@ -186,23 +186,28 @@
                         <div id="div_sr" ng-show="ctrlConfig.isCtrlSelected(5)" class="">
                             Seguidor de referência
                         </div>
+                        <input type="button" ng-click="ctrlConfig.atualizar()" value="Atualizar">
+
                     </div>
                     <div id="div_enviar" class="">
-                        <input type="button" name=Pame" ng-click="ctrlConfig.enviar()" value="Enviar">
+                        <input type="button" ng-click="ctrlConfig.enviar()" value="Enviar">
                     </div>
                 </div>
 
                 <div id="div_content" class="" >
-                    <div id="div_chart_um" class="" style="min-width: 310px; height:200px; margin: 0 auto">
+                    <input type="checkbox" name="freeze" value="false" ng-model="ctrlConfig.freeze.freeze">
+                    <label for="freeze">Congelar gráfico</label>
+                    <div id="div_chart_um" class="chart">
 
                     </div>
-                    <div id="div_chart_dois" class="" style="min-width: 310px; height:200px; margin: 0 auto"  >
+                    <div id="div_stat">
+                    </div>
+                    <div id="div_chart_dois" class="chart">
 
                     </div>
                 </div>
-
                 <div id="div_rodape" class="align_right">
-                    <input type="button" ng-click="ctrlConfig.secarTanque()" value="Secar Tanque" />
+
                 </div>
             </section>
 

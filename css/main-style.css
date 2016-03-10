@@ -62,14 +62,23 @@ html,body { height: 100%; margin: 0px; padding: 0px; }
 }
 
 #div_content {
+
 }
 
-#div_char_um {
+.chart {
+    height: 300px
+}
 
+#div_chart_um {
+    position: relative;
+    min-width: 310px;
+    margin: 0 auto
 }
 
 #div_chart_dois {
-
+    position: relative;
+    min-width: 310px;
+    margin: 0 auto
 }
 
 #div_rodape{
