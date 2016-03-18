@@ -684,8 +684,51 @@
         }
     });
 
+
+
     app.controller('PIDConfigController', function(PIDParam) {
         this.pidParam = PIDParam;
+
+        this.atualizarParam = function () {
+            if (this.pidParam.kp != 0){
+                this.atualizarParamTI();
+                this.atualizarParamKI();
+                this.atualizarParamTD();
+                this.atualizarParamKD();
+            }
+        }
+
+        this.atualizarParamTI = function () {
+            if (this.pidParam.kp != 0 && this.pidParam.ki != 0) {
+                this.pidParam.ti= this.pidParam.kp / this.pidParam.ki;
+            } else {
+                this.pidParam.ti = 0;
+            }
+        }
+
+        this.atualizarParamKI = function () {
+            if (this.pidParam.kp != 0 && this.pidParam.ki != 0) {
+                this.pidParam.ki = this.pidParam.kp / this.pidParam.ti;
+            } else {
+                this.pidParam.ki = 0;
+            }
+        }
+
+        this.atualizarParamTD = function () {
+            if (this.pidParam.kp != 0 && this.pidParam.kd != 0) {
+                this.pidParam.td = this.pidParam.kd / this.pidParam.kp;
+            } else {
+                this.pidParam.td = 0;
+            }
+        }
+
+        this.atualizarParamKD = function () {
+            if (this.pidParam.kp != 0 && this.pidParam.ti != 0) {
+                this.pidParam.kd = this.pidParam.kp * this.pidParam.td;
+            } else {
+                this.pidParam.kd = 0;
+            }
+        }
 
         this.limparForm = function() {
             for (var param in this.pidParam) {

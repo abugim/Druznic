@@ -22,7 +22,7 @@
                             <input type="text" name="ip" ng-model="conexaoParam.ip">
 
                             <label for="porta">Porta: </label>
-                            <input type="text" name="porta" ng-model="conexaoParam.porta">
+                            <input type="number" name="porta" ng-model="conexaoParam.porta">
 
                             <label for="sel_escrita">Canal escrita: </label>
                             <select ng-model="conexaoParam.escrita" class="" name="sel_esctria">
@@ -153,21 +153,26 @@
                             <br>
 
                             <label for="kp">KP: </label>
-                            <input type="text" name="kp" ng-model="pidConfig.pidParam.kp" value=""/>
+                            <input type="text" name="kp" ng-model="pidConfig.pidParam.kp"
+                                ng-change="pidConfig.atualizarParam()" value=""/>
                             <br>
                             <div ng-hide="pidConfig.isPIDSelected('0') || pidConfig.isPIDSelected('2')">
                                 <label for="ki">KI:</label>
-                                <input type="text" name="ki" ng-model="pidConfig.pidParam.ki" value=""/>
+                                <input type="text" name="ki" ng-model="pidConfig.pidParam.ki"
+                                    ng-change="pidConfig.atualizarParamTI()" value=""/>
                                 <label for="ti">TI:</label>
-                                <input type="text" name="ti" ng-model="pidConfig.pidParam.ti" value=""/>
+                                <input type="text" name="ti" ng-model="pidConfig.pidParam.ti"
+                                    ng-change="pidConfig.atualizarParamKI()" value=""/>
                                 <br>
                             </div>
 
                             <div ng-hide="pidConfig.isPIDSelected('0') || pidConfig.isPIDSelected('1')">
                                 <label for="kd">KD:</label>
-                                <input type="text" name="kd" ng-model="pidConfig.pidParam.kd" value=""/>
+                                <input type="text" name="kd" ng-model="pidConfig.pidParam.kd"
+                                    ng-change="pidConfig.atualizarParamTD()"value=""/>
                                 <label for="td">TD:</label>
-                                <input type="text" name="td" ng-model="pidConfig.pidParam.td"value=""/>
+                                <input type="text" name="td" ng-model="pidConfig.pidParam.td"
+                                    ng-change="pidConfig.atualizarParamKD()" value=""/>
                                 <br>
                             </div>
 
