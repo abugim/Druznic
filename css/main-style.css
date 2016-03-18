@@ -4,15 +4,6 @@ div {
 
 html,body { height: 100%; margin: 0px; padding: 0px; }
 
-#div_body {
-    background-color: lightblue;
-    height: 100%;
-}
-
-#div_login {
-
-}
-
 .align_center {
     text-align: center;
 }
@@ -23,12 +14,20 @@ html,body { height: 100%; margin: 0px; padding: 0px; }
     text-align: left;
 }
 
+#div_body {
+    background-color: lightblue;
+    height: 100%;
+}
+
+#div_login {
+
+}
+
 #div_conf_connect {
     position: absolute;
     display: none;
     right: 0px;
     height: 100%;
-    width: 100px;
     background-color: red;
     z-index: 90;
 }
@@ -63,14 +62,23 @@ html,body { height: 100%; margin: 0px; padding: 0px; }
 }
 
 #div_content {
+
 }
 
-#div_char_um {
+.chart {
+    height: 300px
+}
 
+#div_chart_um {
+    position: relative;
+    min-width: 310px;
+    margin: 0 auto
 }
 
 #div_chart_dois {
-
+    position: relative;
+    min-width: 310px;
+    margin: 0 auto
 }
 
 #div_rodape{

@@ -1,30 +1,709 @@
-(function () {
-    var app = angular.module('controle', [ ]);
+(function() {
+    var qtdPontos = 50000;
+    var chartControle;
+    var chartNivel;
+    var ws = new WebSocket('ws://localhost:9002/ws');
+    var freeze_global = {freeze: false};
 
-    app.controller('CtrlConfigController' ,function () {
-        this.selectCtrl = function (ctrlOpt) {
-            this.ctrl = ctrlOpt;
+    function pedirEstado() {
+        setTimeout(function functionName() {
+            ws.send(3);
+            pedirEstado();
+        }, 100);
+    }
+
+    ws.onmessage = function(message) {
+        //console.log("got:'" + message.data + "'");
+
+        var chartControle = $('#div_chart_um').highcharts();
+        var chartNivel = $('#div_chart_dois').highcharts();
+        //console.log('Message: ' + message.data);
+        if (message.data != "" && !(message.data.match(/^\s+$/))) {
+            var estados = message.data.split(';');
+            var n1, n2;
+            for (estado of estados) {
+                if (estado.length != 0) {
+                    var est = estado.split('|');
+
+                    var tempo = est[0];
+                    var vetControle = est[1].split(',');
+                    var vetNivel = est[2].split(',');
+                    n1 = vetNivel[0];
+                    n2 = vetNivel[1];
+                    var i = 0;
+                    for (i = 0; i < chartControle.series.length; i++) {
+                        chartControle.series[i].addPoint({x: tempo, y: parseFloat(vetControle[i])}, false, (chartControle.series[i].data.length === 1200), false);
+                    }
+                    for (i = 0; i < chartNivel.series.length; i++) {
+                        chartNivel.series[i].addPoint({x: tempo, y: parseFloat(vetNivel[i])}, false, (chartNivel.series[i].data.length == 1200), false);
+                    }
+                }
+            }
+            $('#div_stat').html('Nível 1: ' + n1 + '\tNível 2: ' + n2);
+
+            if (!freeze_global.freeze){
+                chartControle.redraw();
+                chartNivel.redraw();
+            }
+        }
+    };
+
+    function setMA() {
+        chartControle.addSeries({
+            name: 'Sinal Gerado',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartControle.addSeries({
+            name: 'Sinal Saturado',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+
+        chartNivel.addSeries({
+            name: 'Nível 1',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartNivel.addSeries({
+            name: 'Nível 2',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+    }
+
+    function setMF() {
+        chartControle.addSeries({
+            name: 'Erro',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartControle.addSeries({
+            name: 'Erro Saturado',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+
+        chartNivel.addSeries({
+            name: 'Nível 1',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartNivel.addSeries({
+            name: 'Nível 2',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartNivel.addSeries({
+            name: 'Referência',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+    }
+
+    function setPID() {
+        chartControle.addSeries({
+            name: 'Erro',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartControle.addSeries({
+            name: 'Ação Proporcional',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartControle.addSeries({
+            name: 'Ação Integral',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartControle.addSeries({
+            name: 'Ação Derivativa',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartControle.addSeries({
+            name: 'Controle',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartControle.addSeries({
+            name: 'Controle Saturado',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+
+        chartNivel.addSeries({
+            name: 'Nível 1',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartNivel.addSeries({
+            name: 'Nível 2',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartNivel.addSeries({
+            name: 'Referência',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+    }
+
+    function setPIDPID() {
+        chartControle.addSeries({
+            name: 'Sinal Gerado',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartControle.addSeries({
+            name: 'Sinal Saturado',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+
+        chartNivel.addSeries({
+            name: 'Nível 1',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartNivel.addSeries({
+            name: 'Nível 2',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+    }
+
+    function setOE() {
+        chartControle.addSeries({
+            name: 'Sinal Gerado',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartControle.addSeries({
+            name: 'Sinal Saturado',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+
+        chartNivel.addSeries({
+            name: 'Nível 1',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartNivel.addSeries({
+            name: 'Nível 2',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+    }
+
+    function setSR() {
+        chartControle.addSeries({
+            name: 'Sinal Gerado',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartControle.addSeries({
+            name: 'Sinal Saturado',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+
+        chartNivel.addSeries({
+            name: 'Nível 1',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartNivel.addSeries({
+            name: 'Nível 2',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+    }
+
+    function limparTudo() {
+        // parar timeout
+        chartControle = $('#div_chart_um').highcharts();
+        while (chartControle.series.length) {
+            chartControle.series[0].remove();
+        }
+
+        chartNivel = $('#div_chart_dois').highcharts();
+        while (chartNivel.series.length) {
+            chartNivel.series[0].remove();
+        }
+    }
+
+    var app = angular.module('controle', []);
+
+    app.factory('ConexaoParam', function() {
+        return {
+            ip: '10.13.99.69',
+            porta: '20081',
+            escrita: '0',
+            canal_selected: [true, true, false, false, false, false, false, false]
         };
+    });
 
-        this.isCtrlSelected = function (ctrlOpt) {
-            return this.ctrl === ctrlOpt;
+    app.factory('ControleParam', function() {
+        return {
+            leitura_um: {
+                id: '0',
+                name: 'Canal 0'
+            },
+            leitura_dois: {
+                id: '1',
+                name: 'Canal 1'
+            },
+            onda: {
+                tipo: '0',
+                amp: 0,
+                amp_sup: 0,
+                amp_inf: 0,
+                periodo: 0,
+                periodo_sup: 0,
+                periodo_inf: 0,
+                offset: 0
+            },
+            ctrl_param: {
+                tipo_ctrl: '0',
+                params: ''
+            }
+        };
+    });
+
+    app.factory('PIDParam', function() {
+        return {
+            pid_selected: '0',
+            kp: 0,
+            ki: 0,
+            ti: 0,
+            kd: 0,
+            td: 0
+        };
+    });
+
+    app.controller('ConexaoController', function(ConexaoParam) {
+        this.ip = ConexaoParam.ip;
+        this.porta = ConexaoParam.porta;
+        this.escrita = ConexaoParam.escrita;
+        this.canal_selected = ConexaoParam.canal_selected;
+
+        this.status = 'Desconectado';
+
+        this.conectar = function() {
+            var msg = '0 ' + this.ip + ' ' + this.porta;
+            console.log('Conectar: ' + msg);
+            ws.send(msg);
         }
     });
 
-    app.controller('OndaConfigController', function () {
-        this.selectOnda = function (ondaOpt) {
-            this.onda = ondaOpt;
+    app.controller('CtrlConfigController', function(ConexaoParam, ControleParam, PIDParam) {
+
+        this.canal_selected = ConexaoParam.canal_selected;
+        this.leitura_um = ControleParam.leitura_um;
+        this.leitura_dois = ControleParam.leitura_dois;
+
+        this.onda = ControleParam.onda;
+        this.ctrl_param = ControleParam.ctrl_param;
+
+        this.lastN1;
+        this.lastN2;
+
+        this.freeze = freeze_global;
+
+        this.getOptions = function() {
+            var selectedOptions = [];
+            // console.log(this.canal_selected);
+            for (var i = 0; i < this.canal_selected.length; i++) {
+                if (this.canal_selected[i] && i != this.leitura_dois.id) {
+                    selectedOptions.push({
+                        id: i,
+                        opt: "Canal " + i
+                    });
+                }
+            }
+            return selectedOptions;
         }
 
-        this.isOndaSelected = function (ondaOpt) {
-            return this.onda === ondaOpt;
+        this.getOptions2 = function() {
+            var selectedOptions = [];
+            for (var i = 0; i < this.canal_selected.length; i++) {
+                if (this.canal_selected[i] && i != this.leitura_um.id) {
+                    selectedOptions.push({
+                        id: i,
+                        opt: "Canal " + i
+                    });
+                }
+            }
+            return selectedOptions;
+        }
+
+        this.canalIsSelected = function(canal) {
+            return canal_selected[canal];
+        }
+
+        this.selectCtrl = function(ctrlOpt) {
+            this.ctrl_param.tipo_ctrl = ctrlOpt;
+        };
+
+        this.isCtrlSelected = function(ctrlOpt) {
+            return this.ctrl_param.tipo_ctrl === ctrlOpt;
+        }
+
+        this.filtro = function () {
+            if (!this.filtro_back && !this.filtro_cond){
+                return 0;
+            } else if (this.filtro_back) {
+                return 1;
+            } else {
+                return 2;
+            }
+        }
+
+        this.enviar = function() {
+            var msg = '2 ' + this.leitura_um.id +
+                        ' ' + this.leitura_dois.id +
+                        ' ' + ConexaoParam.escrita;
+
+            for (var param in this.onda) {
+                if (this.onda.hasOwnProperty(param)) {
+                    msg += ' ' + this.onda[param];
+                }
+            }
+
+            // for (var param in this.ctrl_param) {
+            //     if (this.ctrl_param.hasOwnProperty(param)) {
+            //         msg += ' ' + this.ctrl_param[param];
+            //     }
+            // }
+            // Configurar series
+            chartControle = $('#div_chart_um').highcharts();
+            while (chartControle.series.length) {
+                chartControle.series[0].remove();
+            }
+
+            chartNivel = $('#div_chart_dois').highcharts();
+            while (chartNivel.series.length) {
+                chartNivel.series[0].remove();
+            }
+
+            msg += ' ' + this.ctrl_param.tipo_ctrl;
+            switch (this.ctrl_param.tipo_ctrl) {
+                case 0:
+                    setMA();
+                    break;
+                case 1:
+                    setMF();
+                    break;
+                case 2:
+                    this.ctrl_param.params = ' ' + PIDParam.kp +
+                        ' ' + PIDParam.ki +
+                        ' ' + PIDParam.kd +
+                        ' ' + (PIDParam.pid_selected == 4 ? 1 : 0) +
+                        ' ' + (this.filtro());
+                    setPID();
+                    break;
+                case 3:
+                    setPIDPID();
+                    break;
+                case 4:
+                    setOE();
+                    break;
+                case 5:
+                    setSR();
+                    break;
+                default:
+            }
+            msg += this.ctrl_param.params;
+            console.log('Enviar configurações: ' + msg);
+            setTimeout(pedirEstado(), 100);
+            ws.send(msg);
+        }
+
+        this.atualizar = function () {
+            var msg = '4 ' + this.leitura_um.id +
+                       ' ' + this.leitura_dois.id +
+                       ' ' + ConexaoParam.escrita +
+                       ' ' + this.ctrl_param.tipo_ctrl;
+
+
+            switch (this.ctrl_param.tipo_ctrl) {
+                case 2:
+                    this.ctrl_param.params = ' ' + PIDParam.kp +
+                        ' ' + PIDParam.ki +
+                        ' ' + PIDParam.kd +
+                        ' ' + (PIDParam.pid_selected == 4 ? 1 : 0) +
+                        ' ' + (this.filtro());
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                default:
+            }
+            msg += this.ctrl_param.params;
+            console.log('Enviar configurações: ' + msg);
+            ws.send(msg);
+        }
+
+        this.secarTanque = function() {
+            limparTudo();
+            var msg = '' + this.leitura_um.id + ' ' + this.leitura_dois.id + ' 2 0 0 0 0 0 0 0 0 0';
+            console.log('Secar tanque: ' + msg);
+            ws.send(msg);
+        }
+    });
+
+    app.controller('OndaConfigController', function(ControleParam) {
+        this.onda = ControleParam.onda;
+
+        this.limparForm = function() {
+            for (var param in ControleParam.onda) {
+                if (ControleParam.onda.hasOwnProperty(param) && param != 'tipo') {
+                    ControleParam.onda[param] = 0;
+                }
+            }
+        }
+
+        this.isOndaSelected = function(ondaOpt) {
+            return this.onda.tipo === ondaOpt;
+        }
+    });
+
+    app.controller('PIDConfigController', function(PIDParam) {
+        this.pidParam = PIDParam;
+
+        this.limparForm = function() {
+            for (var param in this.pidParam) {
+                if (this.pidParam.hasOwnProperty(param) && param != 'pid_selected') {
+                    this.pidParam[param] = 0;
+                }
+            }
+        }
+
+        this.isPIDSelected = function(pidOpt) {
+            return this.pidParam.pid_selected === pidOpt;
         }
     });
 
     var menuOpen = false;
     var controle = "";
 
-    $('.controle').click(function(event){
+    $('.controle').click(function(event) {
         //console.log($(this).attr('value'));
         if (menuOpen) {
             if (controle == $(this).attr('value')) {
@@ -40,11 +719,15 @@
         }
     });
 
-    $('#btn_open_connect').click(function(){
-        $('#div_conf_connect').animate({width: 'toggle'});
+    $('#btn_open_connect').click(function() {
+        $('#div_conf_connect').animate({
+            width: 'toggle'
+        });
     });
-    $('#btn_connect').click(function(){
-        $('#div_conf_connect').animate({width: 'toggle'});
+    $('#btn_connect').click(function() {
+        $('#div_conf_connect').animate({
+            width: 'toggle'
+        });
     });
 
     Highcharts.setOptions({
@@ -55,24 +738,17 @@
 
     $('#div_chart_um').highcharts({
         chart: {
-            type: 'spline',
-            animation: Highcharts.svg, // don't animate in old IE
+            type: 'line',
+            animation: false, // don't animate in old IE
             marginRight: 10,
             events: {
-                load: function () {
-
-                    // set up the updating of the chart each second
-                    var series = this.series[0];
-                    setInterval(function () {
-                        var x = (new Date()).getTime(), // current time
-                            y = Math.random();
-                        series.addPoint([x, y], true, true);
-                    }, 1000);
+                load: function() {
+                    chartControle = this.series;
                 }
             }
         },
         title: {
-            text: 'Live random data'
+            text: 'Controle'
         },
         xAxis: {
             type: 'datetime',
@@ -80,7 +756,7 @@
         },
         yAxis: {
             title: {
-                text: 'Value'
+                text: 'Tensão (V)'
             },
             plotLines: [{
                 value: 0,
@@ -89,56 +765,32 @@
             }]
         },
         tooltip: {
-            formatter: function () {
-                return '<b>' + this.series.name + '</b><br/>' +
-                    Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
-                    Highcharts.numberFormat(this.y, 2);
-            }
+            enabled: false
+            // formatter: function() {
+            //     return '<b>' + this.series.name + '</b><br/>' +
+            //         Highcharts.numberFormat(this.y, 2);
+            // }
         },
         legend: {
-            enabled: false
+            enabled: true
         },
         exporting: {
             enabled: false
-        },
-        series: [{
-            name: 'Random data',
-            data: (function () {
-                // generate an array of random data
-                var data = [],
-                    time = (new Date()).getTime(),
-                    i;
-
-                for (i = -19; i <= 0; i += 1) {
-                    data.push({
-                        x: time + i * 1000,
-                        y: Math.random()
-                    });
-                }
-                return data;
-            }())
-        }]
+        }
     });
     $('#div_chart_dois').highcharts({
         chart: {
-            type: 'spline',
-            animation: Highcharts.svg, // don't animate in old IE
+            type: 'line',
+            animation: false, // don't animate in old IE
             marginRight: 10,
             events: {
-                load: function () {
-
-                    // set up the updating of the chart each second
-                    var series = this.series[0];
-                    setInterval(function () {
-                        var x = (new Date()).getTime(), // current time
-                            y = Math.random();
-                        series.addPoint([x, y], true, true);
-                    }, 100);
+                load: function() {
+                    chartNivel = this;
                 }
             }
         },
         title: {
-            text: 'Live random data'
+            text: 'Nível'
         },
         xAxis: {
             type: 'datetime',
@@ -146,7 +798,7 @@
         },
         yAxis: {
             title: {
-                text: 'Value'
+                text: 'Nível (cm)'
             },
             plotLines: [{
                 value: 0,
@@ -155,35 +807,18 @@
             }]
         },
         tooltip: {
-            formatter: function () {
-                return '<b>' + this.series.name + '</b><br/>' +
-                    Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
-                    Highcharts.numberFormat(this.y, 2);
-            }
+            enabled: false
+            // formatter: function() {
+            //     return '<b>' + this.series.name + '</b><br/>' +
+            //         Highcharts.numberFormat(this.y, 2);
+            // }
         },
         legend: {
-            enabled: false
+            enabled: true
         },
         exporting: {
             enabled: false
-        },
-        series: [{
-            name: 'Random data',
-            data: (function () {
-                // generate an array of random data
-                var data = [],
-                    time = (new Date()).getTime(),
-                    i;
-
-                for (i = -999; i <= 0; i += 1) {
-                    data.push({
-                        x: time + i * 100,
-                        y: Math.random()
-                    });
-                }
-                return data;
-            }())
-        }]
+        }
     });
 
 })();
