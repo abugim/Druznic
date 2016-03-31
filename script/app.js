@@ -4,6 +4,7 @@
     var chartNivel;
     var ws = new WebSocket('ws://localhost:9002/ws');
     var freeze_global = {freeze: false};
+    var isConectado = false;
 
     function pedirEstado() {
         setTimeout(function functionName() {
@@ -25,21 +26,40 @@
                 if (estado.length != 0) {
                     var est = estado.split('|');
 
-                    var tempo = est[0];
+                    var tempo = est[0] * 1000;
                     var vetControle = est[1].split(',');
                     var vetNivel = est[2].split(',');
+                    var vetAnalise;
+                    if (est.length == 4 && est[3] != '') {
+                        console.log(est[3]);
+                        vetAnalise = est[3].split(',');
+                    }
                     n1 = vetNivel[0];
                     n2 = vetNivel[1];
                     var i = 0;
                     for (i = 0; i < chartControle.series.length; i++) {
-                        chartControle.series[i].addPoint({x: tempo, y: parseFloat(vetControle[i])}, false, (chartControle.series[i].data.length === 1200), false);
+                        chartControle.series[i].addPoint({x: tempo, y: parseFloat(vetControle[i])}, false, (chartControle.series[i].data.length > 1200), false);
                     }
                     for (i = 0; i < chartNivel.series.length; i++) {
-                        chartNivel.series[i].addPoint({x: tempo, y: parseFloat(vetNivel[i])}, false, (chartNivel.series[i].data.length == 1200), false);
+                        chartNivel.series[i].addPoint({x: tempo, y: parseFloat(vetNivel[i])}, false, (chartNivel.series[i].data.length > 1200), false);
                     }
                 }
             }
-            $('#div_stat').html('Nível 1: ' + n1 + '\tNível 2: ' + n2);
+            var dadosVisuais = 'Nível 1: ' + n1 + '\tNível 2: ' + n2;
+            if (vetAnalise[0]) {
+                dadosVisuais += '\tTempo de pico: ' + vetAnalise[1];
+            }
+            if (vetAnalise[2]) {
+                dadosVisuais += '\tSobre sinal: ' + vetAnalise[3];
+            }
+            if (vetAnalise[4]) {
+                dadosVisuais += '\tTempo de subida: ' + vetAnalise[5];
+            }
+            if (vetAnalise[6]) {
+                dadosVisuais += '\tTempo de acomodação: ' + vetAnalise[7];
+            }
+
+            $('#div_stat').html(dadosVisuais);
 
             if (!freeze_global.freeze){
                 chartControle.redraw();
@@ -445,7 +465,7 @@
         }
     }
 
-    var app = angular.module('controle', []);
+    var app = angular.module('controle', ['diretivas']);
 
     app.factory('ConexaoParam', function() {
         return {
@@ -478,6 +498,9 @@
             },
             ctrl_param: {
                 tipo_ctrl: '0',
+                faixaSubida: '0',
+                faixaAcomodacao: '0.02',
+                unidadeSobressinal: '0',
                 params: ''
             }
         };
@@ -501,11 +524,23 @@
         this.canal_selected = ConexaoParam.canal_selected;
 
         this.status = 'Desconectado';
+        this.txtConectar = 'Conectar';
 
         this.conectar = function() {
-            var msg = '0 ' + this.ip + ' ' + this.porta;
-            console.log('Conectar: ' + msg);
-            ws.send(msg);
+            if (isConectado) {
+                this.status = 'Desconectado';
+                this.txtConectar = 'Conectar';
+                var msg = '1';
+                console.log('Conectar: ' + msg);
+                ws.send(msg);
+            } else {
+                this.status = 'Conectado';
+                this.txtConectar = 'Desconectar';
+                var msg = '0 ' + this.ip + ' ' + this.porta;
+                console.log('Conectar: ' + msg);
+                ws.send(msg);
+            }
+            isConectado = !isConectado;
         }
     });
 
@@ -574,8 +609,8 @@
 
         this.enviar = function() {
             var msg = '2 ' + this.leitura_um.id +
-                        ' ' + this.leitura_dois.id +
-                        ' ' + ConexaoParam.escrita;
+            ' ' + this.leitura_dois.id +
+            ' ' + ConexaoParam.escrita;
 
             for (var param in this.onda) {
                 if (this.onda.hasOwnProperty(param)) {
@@ -583,11 +618,6 @@
                 }
             }
 
-            // for (var param in this.ctrl_param) {
-            //     if (this.ctrl_param.hasOwnProperty(param)) {
-            //         msg += ' ' + this.ctrl_param[param];
-            //     }
-            // }
             // Configurar series
             chartControle = $('#div_chart_um').highcharts();
             while (chartControle.series.length) {
@@ -599,32 +629,36 @@
                 chartNivel.series[0].remove();
             }
 
-            msg += ' ' + this.ctrl_param.tipo_ctrl;
+            msg += ' ' + this.ctrl_param.tipo_ctrl +
+                    ' ' + this.ctrl_param.faixaSubida +
+                    ' ' + this.ctrl_param.faixaAcomodacao +
+                    ' ' + this.ctrl_param.unidadeSobressinal;
             switch (this.ctrl_param.tipo_ctrl) {
                 case 0:
-                    setMA();
-                    break;
+                setMA();
+                break;
                 case 1:
-                    setMF();
-                    break;
+                setMF();
+                break;
                 case 2:
-                    this.ctrl_param.params = ' ' + PIDParam.kp +
-                        ' ' + PIDParam.ki +
-                        ' ' + PIDParam.kd +
-                        ' ' + (PIDParam.pid_selected == 4 ? 1 : 0) +
-                        ' ' + (this.filtro());
-                    setPID();
-                    break;
+                this.ctrl_param.params = ' ' + PIDParam.kp +
+                ' ' + PIDParam.ki +
+                ' ' + PIDParam.kd +
+                ' ' + (PIDParam.pid_selected == 4 ? 1 : 0) +
+                ' ' + (this.filtro());
+                setPID();
+                break;
                 case 3:
-                    setPIDPID();
-                    break;
+                setPIDPID();
+                break;
                 case 4:
-                    setOE();
-                    break;
+                setOE();
+                break;
                 case 5:
-                    setSR();
-                    break;
+                setSR();
+                break;
                 default:
+                limparTudo();
             }
             msg += this.ctrl_param.params;
             console.log('Enviar configurações: ' + msg);
@@ -634,25 +668,31 @@
 
         this.atualizar = function () {
             var msg = '4 ' + this.leitura_um.id +
-                       ' ' + this.leitura_dois.id +
-                       ' ' + ConexaoParam.escrita +
-                       ' ' + this.ctrl_param.tipo_ctrl;
+            ' ' + this.leitura_dois.id +
+            ' ' + ConexaoParam.escrita;
 
+            for (var param in this.onda) {
+                if (this.onda.hasOwnProperty(param)) {
+                    msg += ' ' + this.onda[param];
+                }
+            }
+
+            msg += ' ' + this.ctrl_param.tipo_ctrl;
 
             switch (this.ctrl_param.tipo_ctrl) {
                 case 2:
-                    this.ctrl_param.params = ' ' + PIDParam.kp +
-                        ' ' + PIDParam.ki +
-                        ' ' + PIDParam.kd +
-                        ' ' + (PIDParam.pid_selected == 4 ? 1 : 0) +
-                        ' ' + (this.filtro());
-                    break;
+                this.ctrl_param.params = ' ' + PIDParam.kp +
+                ' ' + PIDParam.ki +
+                ' ' + PIDParam.kd +
+                ' ' + (PIDParam.pid_selected == 4 ? 1 : 0) +
+                ' ' + (this.filtro());
+                break;
                 case 3:
-                    break;
+                break;
                 case 4:
-                    break;
+                break;
                 case 5:
-                    break;
+                break;
                 default:
             }
             msg += this.ctrl_param.params;
@@ -661,6 +701,7 @@
         }
 
         this.secarTanque = function() {
+            this.selectCtrl(-1);
             limparTudo();
             var msg = '' + this.leitura_um.id + ' ' + this.leitura_dois.id + ' 2 0 0 0 0 0 0 0 0 0';
             console.log('Secar tanque: ' + msg);
@@ -683,8 +724,6 @@
             return this.onda.tipo === ondaOpt;
         }
     });
-
-
 
     app.controller('PIDConfigController', function(PIDParam) {
         this.pidParam = PIDParam;
@@ -795,6 +834,15 @@
         },
         xAxis: {
             type: 'datetime',
+            dateTimeLabelFormats: {
+                millisecond: '%M:%S',
+                second: '%M:%S',
+                minute: '%M:%S'
+            },
+            units: [[
+                'second',
+                [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
+            ]],
             tickPixelInterval: 150
         },
         yAxis: {
@@ -837,6 +885,15 @@
         },
         xAxis: {
             type: 'datetime',
+            dateTimeLabelFormats: {
+                millisecond: '%M:%S',
+                second: '%M:%S',
+                minute: '%M:%S'
+            },
+            units: [[
+                'second',
+                [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
+            ]],
             tickPixelInterval: 150
         },
         yAxis: {

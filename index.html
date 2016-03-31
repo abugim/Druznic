@@ -22,7 +22,7 @@
                             <input type="text" name="ip" ng-model="conexaoParam.ip">
 
                             <label for="porta">Porta: </label>
-                            <input type="number" name="porta" ng-model="conexaoParam.porta">
+                            <input type="text" name="porta" ng-model="conexaoParam.porta">
 
                             <label for="sel_escrita">Canal escrita: </label>
                             <select ng-model="conexaoParam.escrita" class="" name="sel_esctria">
@@ -55,7 +55,7 @@
                             <input type="checkbox" name="canal_7" ng-model="conexaoParam.canal_selected[7]">
                             <label for="canal_7">Canal 7</label>
 
-                            <input id="btn_connect" ng-click="conexaoParam.conectar()" type="button" value="Conectar" />
+                            <input id="btn_connect" ng-click="conexaoParam.conectar()" type="button" value="{{conexaoParam.txtConectar}}" />
                         </form>
                     </fieldset>
                 </div>
@@ -72,6 +72,7 @@
                     <input ng-click="ctrlConfig.selectCtrl(3)" class="controle" type="button" value="PID cascata" />
                     <input ng-click="ctrlConfig.selectCtrl(4)" class="controle" type="button" value="Observador de estados" />
                     <input ng-click="ctrlConfig.selectCtrl(5)" class="controle" type="button" value="Seguidor de referência" />
+                    <input ng-click="ctrlConfig.secarTanque()" class="controle" type="button" value="Secar Tanque" />
                 </div>
                 <div id="div_menu" class="align_center">
                     <div id="div_onda" ng-controller="OndaConfigController as ondaConfig" class="align_right">
@@ -122,6 +123,29 @@
                                 <br>
                                 <label for="aleatoria_periodo_inf">Periodo inferior: </label>
                                 <input ng-model="ctrlConfig.onda.periodo_inf"type="text" name="aleatoria_periodo_inf" value="">
+                                <br>
+                            </div>
+
+                            <div ng-show="ondaConfig.isOndaSelected('0')||ondaConfig.isOndaSelected('2')||ondaConfig.isOndaSelected('4')">
+                                <label for="select-subida">Faixa tempo de subida: </label>
+                                <select class="" name="select-subida" ng-model="ctrlConfig.ctrl_param.faixaSubida">
+                                    <option value="0">0%</option>
+                                    <option value="0.05">5%</option>
+                                    <option value="0.1">10%</option>
+                                </select>
+                                <br>
+                                <label for="select-sobressinal">Sobressinal: </label>
+                                <select class="" name="select-sobressinal" ng-model="ctrlConfig.ctrl_param.unidadeSobressinal">
+                                    <option value="0">Percentual</option>
+                                    <option value="1">Centimetros</option>
+                                </select>
+                                <br>
+                                <label for="select-acomodacao">Faixa tempo de acomodação: </label>
+                                <select class="" name="select-acomodacao" ng-model="ctrlConfig.ctrl_param.faixaAcomodacao">
+                                    <option value="0.02">2%</option>
+                                    <option value="0.05">5%</option>
+                                    <option value="0.1">10%</option>
+                                </select>
                                 <br>
                             </div>
                         </form>
@@ -219,5 +243,6 @@
         </div>
         <script src="script/angular.min.js"></script>
         <script src="script/app.js"></script>
+        <script src="script/diretivas.js"></script>
     </body>
 </html>
