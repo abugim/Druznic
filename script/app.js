@@ -31,8 +31,8 @@
                     var vetNivel = est[2].split(',');
                     var vetAnalise;
                     if (est.length == 4 && est[3] != '') {
-                        console.log(est[3]);
                         vetAnalise = est[3].split(',');
+                        console.log(vetAnalise);
                     }
                     n1 = vetNivel[0];
                     n2 = vetNivel[1];
@@ -46,7 +46,6 @@
                 }
             }
             var dadosVisuais = 'Nível 1: ' + n1 + '\tNível 2: ' + n2;
-            console.log('vetAnalise: ' + vetAnalise);
             if (vetAnalise[0] == 0) {
                 dadosVisuais += '\tTempo de pico: ' + vetAnalise[1];
             }
