@@ -705,7 +705,7 @@
         this.secarTanque = function() {
             this.selectCtrl(-1);
             limparTudo();
-            var msg = '' + this.leitura_um.id + ' ' + this.leitura_dois.id + ' 2 0 0 0 0 0 0 0 0 0';
+            var msg = '2 ' + this.leitura_um.id + ' ' + this.leitura_dois.id + ' ' + ConexaoParam.escrita + ' 2 0 0 0 0 0 0 0 0 0';
             console.log('Secar tanque: ' + msg);
             ws.send(msg);
         }
