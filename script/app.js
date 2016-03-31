@@ -46,6 +46,7 @@
                 }
             }
             var dadosVisuais = 'Nível 1: ' + n1 + '\tNível 2: ' + n2;
+            console.log('vetAnalise: ' + vetAnalise); 
             if (vetAnalise[0]) {
                 dadosVisuais += '\tTempo de pico: ' + vetAnalise[1];
             }
@@ -705,7 +706,7 @@
         this.secarTanque = function() {
             this.selectCtrl(-1);
             limparTudo();
-            var msg = '2 ' + this.leitura_um.id + ' ' + this.leitura_dois.id + ' ' + ConexaoParam.escrita + ' 2 0 0 0 0 0 0 0 0 0';
+            var msg = '2 ' + this.leitura_um.id + ' ' + this.leitura_dois.id + ' ' + ConexaoParam.escrita + ' 0 0 0 0 0 0 0 0';
             console.log('Secar tanque: ' + msg);
             ws.send(msg);
         }
