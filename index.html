@@ -162,6 +162,12 @@
                             ng-options="c.opt for c in ctrlConfig.getOptions2() track by c.id">
                         </select>
 
+                        <label for="sel_var_controle">Variável de controle:</label>
+                        <select class="" name="sel_nivel_dois" ng-model="ctrlConfig.leitura_dois">
+                            <option value="0">Nível 1</option>
+                            <option value="1">Nível 2</option>
+                        </select>
+
                         <div id="div_conf_pid" ng-show="ctrlConfig.isCtrlSelected(2)"
                             ng-controller="PIDConfigController as pidConfig" class="">
 

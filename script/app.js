@@ -501,6 +501,7 @@
                 faixaSubida: '0',
                 faixaAcomodacao: '0.02',
                 unidadeSobressinal: '0',
+                flagVarControle: '0',
                 params: ''
             }
         };
@@ -632,7 +633,8 @@
             msg += ' ' + this.ctrl_param.tipo_ctrl +
                     ' ' + this.ctrl_param.faixaSubida +
                     ' ' + this.ctrl_param.faixaAcomodacao +
-                    ' ' + this.ctrl_param.unidadeSobressinal;
+                    ' ' + this.ctrl_param.unidadeSobressinal +
+                    ' ' + this.ctrl_param.flagVarControle;
             switch (this.ctrl_param.tipo_ctrl) {
                 case 0:
                 setMA();
