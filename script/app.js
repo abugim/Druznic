@@ -46,17 +46,17 @@
                 }
             }
             var dadosVisuais = 'Nível 1: ' + n1 + '\tNível 2: ' + n2;
-            console.log('vetAnalise: ' + vetAnalise); 
-            if (vetAnalise[0]) {
+            console.log('vetAnalise: ' + vetAnalise);
+            if (vetAnalise[0] == 0) {
                 dadosVisuais += '\tTempo de pico: ' + vetAnalise[1];
             }
-            if (vetAnalise[2]) {
+            if (vetAnalise[2] == 0) {
                 dadosVisuais += '\tSobre sinal: ' + vetAnalise[3];
             }
-            if (vetAnalise[4]) {
+            if (vetAnalise[4] == 0) {
                 dadosVisuais += '\tTempo de subida: ' + vetAnalise[5];
             }
-            if (vetAnalise[6]) {
+            if (vetAnalise[6] == 0) {
                 dadosVisuais += '\tTempo de acomodação: ' + vetAnalise[7];
             }
 
