@@ -764,6 +764,12 @@
             }
         }
 
+        this.atualizarParamTalt = function () {
+            if (this.pidParam.kd == 0) {
+                this.pidParam.talt = sqrt(this.pidParam.kd/this.pidParam.ki)
+            }
+        }
+
         this.limparForm = function() {
             for (var param in this.pidParam) {
                 if (this.pidParam.hasOwnProperty(param) && param != 'pid_selected') {
