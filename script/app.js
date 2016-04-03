@@ -766,7 +766,7 @@
 
         this.atualizarParamTalt = function () {
             if (this.pidParam.kd == 0) {
-                this.pidParam.talt = sqrt(this.pidParam.kd/this.pidParam.ki)
+                this.pidParam.talt = sqrt(this.pidParam.kd/this.pidParam.ki);
             }
         }
 
