@@ -510,7 +510,7 @@
     app.factory('PIDParam', function() {
         return {
             pid_selected: '0',
-            filtro: '0',
+            filtro_selected: '0',
             kp: 0,
             ki: 0,
             ti: 0,
