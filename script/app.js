@@ -516,7 +516,7 @@
             kd: 0,
             td: 0,
             talt: 0,
-            filtro: '0'
+            filtro: 0
         };
     });
 
