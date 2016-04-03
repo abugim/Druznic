@@ -515,8 +515,8 @@
             ti: 0,
             kd: 0,
             td: 0,
-            talt: 0,
-            filtro: '1'
+            filtro: '0',
+            talt: 0
         };
     });
 
@@ -730,6 +730,7 @@
                 this.atualizarParamKI();
                 this.atualizarParamTD();
                 this.atualizarParamKD();
+                this.atualizarParamTalt();
             }
         }
 
