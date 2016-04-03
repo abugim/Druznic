@@ -195,7 +195,7 @@
                                 <input type="text" name="ti" ng-model="pidConfig.pidParam.ti"
                                     ng-change="pidConfig.atualizarParamKI()" value=""/>
                                 <br>
-
+                                <label for="select_pid_filtro">Filtro Integrativo:</label>
                                 <select class="" name="select_pid_filtro" ng-model="pidConfig.pidParam.filtro">
                                     <option value="0">Sem filtro</option>
                                     <option value="1">Back-calculation</option>
@@ -206,7 +206,6 @@
                                 <label for="talt" ng-show="pidConfig.pidParam.filtro == 1">Talt:</label>
                                 <input type="text" name="talt" ng-model="pidConfig.pidParam.talt"
                                     ng-change="" value="" ng-show="pidConfig.pidParam.filtro == 1"/>
-                                <br>
                             </div>
 
                             <div ng-hide="pidConfig.isPIDSelected('0') || pidConfig.isPIDSelected('1')">
