@@ -510,13 +510,13 @@
     app.factory('PIDParam', function() {
         return {
             pid_selected: '0',
+            filtro: '0',
             kp: 0,
             ki: 0,
             ti: 0,
             kd: 0,
             td: 0,
-            talt: 0,
-            filtro: '0'
+            talt: 0
         };
     });
 
