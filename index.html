@@ -185,15 +185,15 @@
 
                             <label for="kp">KP: </label>
                             <input type="text" name="kp" ng-model="pidConfig.pidParam.kp"
-                                ng-change="pidConfig.atualizarParam()" value=""/>
+                                ng-change="pidConfig.atualizarParam(); pidConfig.atualizarParamTalt()" value=""/>
                             <br>
                             <div ng-hide="pidConfig.isPIDSelected('0') || pidConfig.isPIDSelected('2')">
                                 <label for="ki">KI:</label>
                                 <input type="text" name="ki" ng-model="pidConfig.pidParam.ki"
-                                    ng-change="pidConfig.atualizarParamTI()" value=""/>
+                                    ng-change="pidConfig.atualizarParamTI(); pidConfig.atualizarParamTalt()" value=""/>
                                 <label for="ti">TI:</label>
                                 <input type="text" name="ti" ng-model="pidConfig.pidParam.ti"
-                                    ng-change="pidConfig.atualizarParamKI()" value=""/>
+                                    ng-change="pidConfig.atualizarParamKI(); pidConfig.atualizarParamTalt()" value=""/>
                                 <br>
                                 <label for="select_pid_filtro">Filtro Integrativo:</label>
                                 <select class="" name="select_pid_filtro" ng-model="pidConfig.pidParam.filtro">
@@ -211,10 +211,10 @@
                             <div ng-hide="pidConfig.isPIDSelected('0') || pidConfig.isPIDSelected('1')">
                                 <label for="kd">KD:</label>
                                 <input type="text" name="kd" ng-model="pidConfig.pidParam.kd"
-                                    ng-change="pidConfig.atualizarParamTD()"value=""/>
+                                    ng-change="pidConfig.atualizarParamTD(); pidConfig.atualizarParamTalt()"value=""/>
                                 <label for="td">TD:</label>
                                 <input type="text" name="td" ng-model="pidConfig.pidParam.td"
-                                    ng-change="pidConfig.atualizarParamKD()" value=""/>
+                                    ng-change="pidConfig.atualizarParamKD(); pidConfig.atualizarParamTalt()" value=""/>
                                 <br>
                             </div>
                         </div>
