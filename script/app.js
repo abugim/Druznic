@@ -680,7 +680,8 @@
                 ' ' + PIDParam.ki +
                 ' ' + PIDParam.kd +
                 ' ' + (PIDParam.pid_selected == 4 ? 1 : 0) +
-                ' ' + (this.filtro());
+                ' ' + PIDParam.filtro +
+                ' ' + PIDParam.talt;
                 break;
                 case 3:
                 break;
