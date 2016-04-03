@@ -195,19 +195,18 @@
                                 <input type="text" name="ti" ng-model="pidConfig.pidParam.ti"
                                     ng-change="pidConfig.atualizarParamKI()" value=""/>
                                 <br>
-                                <input type="radio" name="chk_filtro" value="true" ng-model="ctrlConfig.sem_filtro">
-                                <label for="chk_wind_up">Sem filtro integrativo</label>
-                                <br>
-                                <input type="radio" name="chk_filtro" value="false" ng-model="ctrlConfig.filtro_back">
-                                <label for="chk_wind_up">Back-calculation</label>
-                                <br>
-                                <input type="radio" name="chk_filtro" value="false" ng-model="ctrlConfig.filtro_cond">
-                                <label for="chk_outro_f">Condicional</label>
+
+                                <select class="" name="select_pid" ng-model="pidConfig.pidParam.filtro"
+                                    ng-change="pidConfig.limparForm()">
+                                    <option value="0">Sem filtro</option>
+                                    <option value="1">Back-calculation</option>
+                                    <option value="2">Condicional</option>
+                                </select>
                                 <br>
 
-                                <label for="talt" ng-show="ctrlConfig.sem_filtro">Talt:</label>
+                                <label for="talt" ng-show="pidConfig.pidParam.filtro == 1">Talt:</label>
                                 <input type="text" name="talt" ng-model="pidConfig.pidParam.talt"
-                                    ng-change="" value="" ng-show="ctrlConfig.sem_filtro"/>
+                                    ng-change="" value="" ng-show="pidConfig.pidParam.filtro == 1"/>
                                 <br>
                             </div>
 

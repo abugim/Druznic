@@ -514,7 +514,9 @@
             ki: 0,
             ti: 0,
             kd: 0,
-            td: 0
+            td: 0,
+            talt: 0,
+            filtro: 0
         };
     });
 
@@ -598,16 +600,6 @@
             return this.ctrl_param.tipo_ctrl === ctrlOpt;
         }
 
-        this.filtro = function () {
-            if (!this.filtro_back && !this.filtro_cond){
-                return 0;
-            } else if (this.filtro_back) {
-                return 1;
-            } else {
-                return 2;
-            }
-        }
-
         this.enviar = function() {
             var msg = '2 ' + this.leitura_um.id +
             ' ' + this.leitura_dois.id +
@@ -647,7 +639,8 @@
                 ' ' + PIDParam.ki +
                 ' ' + PIDParam.kd +
                 ' ' + (PIDParam.pid_selected == 4 ? 1 : 0) +
-                ' ' + (this.filtro());
+                ' ' + PIDParam.filtro +
+                ' ' + PIDParam.talt;
                 setPID();
                 break;
                 case 3:
