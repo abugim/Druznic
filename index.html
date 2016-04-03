@@ -129,9 +129,9 @@
                             <div ng-show="ondaConfig.isOndaSelected('0')||ondaConfig.isOndaSelected('2')||ondaConfig.isOndaSelected('4')">
                                 <label for="select-subida">Faixa tempo de subida: </label>
                                 <select class="" name="select-subida" ng-model="ctrlConfig.ctrl_param.faixaSubida">
-                                    <option value="0">0%</option>
-                                    <option value="0.05">5%</option>
-                                    <option value="0.1">10%</option>
+                                    <option value="0">0% - 100%</option>
+                                    <option value="0.05">5% - 95%</option>
+                                    <option value="0.1">10% - 90%</option>
                                 </select>
                                 <br>
                                 <label for="select-sobressinal">Sobressinal: </label>
@@ -144,6 +144,7 @@
                                 <select class="" name="select-acomodacao" ng-model="ctrlConfig.ctrl_param.faixaAcomodacao">
                                     <option value="0.02">2%</option>
                                     <option value="0.05">5%</option>
+                                    <option value="0.07">7%</option>
                                     <option value="0.1">10%</option>
                                 </select>
                                 <br>
@@ -194,6 +195,16 @@
                                 <input type="text" name="ti" ng-model="pidConfig.pidParam.ti"
                                     ng-change="pidConfig.atualizarParamKI()" value=""/>
                                 <br>
+                                <input type="radio" name="chk_filtro" value="true" ng-model="ctrlConfig.sem_filtro">
+                                <label for="chk_wind_up">Sem filtro integrativo</label>
+                                <input type="radio" name="chk_filtro" value="false" ng-model="ctrlConfig.filtro_back">
+                                <label for="chk_wind_up">Back-calculation</label>
+                                <input type="radio" name="chk_filtro" value="false" ng-model="ctrlConfig.filtro_cond">
+                                <label for="chk_outro_f">Condicional</label>
+
+                                <label for="talt" ng-show="ctrlConfig.sem_filtro">Talt:</label>
+                                <input type="text" name="talt" ng-model="pidConfig.pidParam.talt"
+                                    ng-change="" value="" ng-show="ctrlConfig.sem_filtro"/>
                             </div>
 
                             <div ng-hide="pidConfig.isPIDSelected('0') || pidConfig.isPIDSelected('1')">
@@ -221,11 +232,12 @@
                         <div id="div_sr" ng-show="ctrlConfig.isCtrlSelected(5)" class="">
                             Seguidor de referência
                         </div>
-                        <input type="button" ng-click="ctrlConfig.atualizar()" value="Atualizar">
+
 
                     </div>
                     <div id="div_enviar" class="">
                         <input type="button" ng-click="ctrlConfig.enviar()" value="Enviar">
+                        <input type="button" ng-click="ctrlConfig.atualizar()" value="Atualizar">
                     </div>
                 </div>
 
