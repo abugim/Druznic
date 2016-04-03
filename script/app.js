@@ -639,7 +639,7 @@
                 ' ' + PIDParam.ki +
                 ' ' + PIDParam.kd +
                 ' ' + (PIDParam.pid_selected == 4 ? 1 : 0) +
-                ' ' + PIDParam.filtro +
+                ' ' + PIDParam.filtro_selected +
                 ' ' + PIDParam.talt;
                 setPID();
                 break;
