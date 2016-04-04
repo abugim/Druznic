@@ -510,7 +510,7 @@
     app.factory('PIDParam', function() {
         return {
             pid_selected: '0',
-            filtro_selected: '0',
+            filtro: '0',
             kp: 0,
             ki: 0,
             ti: 0,
@@ -639,7 +639,7 @@
                 ' ' + PIDParam.ki +
                 ' ' + PIDParam.kd +
                 ' ' + (PIDParam.pid_selected == 4 ? 1 : 0) +
-                ' ' + PIDParam.filtro_selected +
+                ' ' + PIDParam.filtro +
                 ' ' + PIDParam.talt;
                 setPID();
                 break;
