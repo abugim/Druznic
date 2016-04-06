@@ -58,6 +58,9 @@
             if (vetAnalise[6] == 1) {
                 dadosVisuais += '\tTempo de acomodação: ' + vetAnalise[7];
             }
+            if (vetAnalise[7] == 1) {
+                dadosVisuais += '\tErro de Regime: ' + vetAnalise[8];
+            }
 
             $('#div_stat').html(dadosVisuais);
 
