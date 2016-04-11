@@ -72,7 +72,7 @@
                     <input ng-click="ctrlConfig.selectCtrl(3)" class="controle" type="button" value="PID cascata" />
                     <input ng-click="ctrlConfig.selectCtrl(4)" class="controle" type="button" value="Observador de estados" />
                     <input ng-click="ctrlConfig.selectCtrl(5)" class="controle" type="button" value="Seguidor de referência" />
-                    <input ng-click="ctrlConfig.secarTanque()" class="controle" type="button" value="Secar Tanque" />
+                    <input ng-click="ctrlConfig.secarTanque()" type="button" value="Secar Tanque" />
                 </div>
                 <div id="div_menu" class="align_center">
                     <div id="div_onda" ng-controller="OndaConfigController as ondaConfig" class="align_right">
@@ -219,8 +219,108 @@
                             </div>
                         </div>
 
-                        <div id="div_conf_pidc" ng-show="ctrlConfig.isCtrlSelected(3)" class="">
-                            PID cascata
+                        <div id="div_conf_pidc" class=""
+                            ng-show="ctrlConfig.isCtrlSelected(3)"
+                            ng-controller="PidCascataController as pidCascata">
+                            <!-- div mestre -->
+                            <div class="mestre">
+                                Mestre<br>
+                                <label for="select_pid">Tipo: </label>
+                                <select class="" name="select_pid" ng-model="pidCascata.pidMestre.pid_selected"
+                                    ng-change="pidCascata.limparForm(pidCascata.pidMestre)">
+                                    <option value="0">P</option>
+                                    <option value="1">PI</option>
+                                    <option value="2">PD</option>
+                                    <option value="3">PID</option>
+                                    <option value="4">PI-D</option>
+                                </select>
+                                <br>
+
+                                <label for="kp">KP: </label>
+                                <input class="pidparam" type="text" name="kp" value=""
+                                    ng-model="pidCascata.pidMestre.kp"/>
+                                <br>
+                                <div ng-hide="pidCascata.isPIDSelected(pidCascata.pidMestre, '0') || pidCascata.isPIDSelected(pidCascata.pidMestre, '2')">
+                                    <label for="ki">KI:</label>
+                                    <input class="pidparam" type="text" name="ki" ng-model="pidCascata.pidMestre.ki"
+                                        ng-change="pidCascata.atualizarParamTI(pidCascata.pidMestre); pidCascata.atualizarParamTalt(pidCascata.pidMestre)" value=""/>
+                                    <label for="ti">TI:</label>
+                                    <input class="pidparam" type="text" name="ti" ng-model="pidCascata.pidMestre.ti"
+                                        ng-change="pidCascata.pidMestre.atualizarParamKI(pidCascata.pidMestre); pidCascata.pidMestre.atualizarParamTalt(pidCascata.pidMestre)" value=""/>
+                                    <br>
+                                    <label for="select_pid_filtro">Filtro Integrativo:</label>
+                                    <select class="" name="select_pid_filtro" ng-model="pidCascata.pidMestre.filtro">
+                                        <option value="0">Sem filtro</option>
+                                        <option value="1">Back-calculation</option>
+                                        <option value="2">Condicional</option>
+                                    </select>
+                                    <br>
+
+                                    <label for="talt" ng-show="pidCascata.pidMestre.filtro == 1">Talt:</label>
+                                    <input class="pidparam" type="text" name="talt" ng-model="pidCascata.pidMestre.talt"
+                                        ng-change="" value="" ng-show="pidCascata.pidMestre.filtro == 1"/>
+                                </div>
+
+                                <div ng-hide="pidCascata.isPIDSelected(pidCascata.pidMestre, '0') || pidCascata.isPIDSelected(pidCascata.pidMestre, '1')">
+                                    <label for="kd">KD:</label>
+                                    <input class="pidparam" type="text" name="kd" ng-model="pidCascata.pidMestre.kd"
+                                        ng-change="pidCascata.atualizarParamTD(pidCascata.pidMestre); pidCascata.Talt(pidCascata.pidMestre)"value=""/>
+                                    <label for="td">TD:</label>
+                                    <input class="pidparam" type="text" name="td" ng-model="pidCascata.pidMestre.td"
+                                        ng-change="pidCascata.atualizarParamKD(pidCascata.pidMestre); pidCascata.atualizarParamTalt(pidCascata.pidMestre)" value=""/>
+                                    <br>
+                                </div>
+                            </div>
+
+                            <!-- div escravo -->
+                            <div class="escravo">
+                                Escravo<br>
+                                <label for="select_pid">Tipo: </label>
+                                <select class="" name="select_pid" ng-model="pidCascata.pidEscravo.pid_selected"
+                                    ng-change="pidCascata.limparForm(pidCascata.pidEscravo)">
+                                    <option value="0">P</option>
+                                    <option value="1">PI</option>
+                                    <option value="2">PD</option>
+                                    <option value="3">PID</option>
+                                    <option value="4">PI-D</option>
+                                </select>
+                                <br>
+
+                                <label for="kp">KP: </label>
+                                <input class="pidparam" type="text" name="kp" value=""
+                                    ng-model="pidCascata.pidEscravo.kp"/>
+                                <br>
+                                <div ng-hide="pidCascata.isPIDSelected(pidCascata.pidEscravo, '0') || pidCascata.isPIDSelected(pidCascata.pidEscravo, '2')">
+                                    <label for="ki">KI:</label>
+                                    <input class="pidparam" type="text" name="ki" ng-model="pidCascata.pidEscravo.ki"
+                                        ng-change="pidCascata.atualizarParamTI(pidCascata.pidEscravo); pidCascata.atualizarParamTalt(pidCascata.pidEscravo)" value=""/>
+                                    <label for="ti">TI:</label>
+                                    <input class="pidparam" type="text" name="ti" ng-model="pidCascata.pidEscravo.ti"
+                                        ng-change="pidCascata.atualizarParamKI(pidCascata.pidEscravo); pidCascata.atualizarParamTalt(pidCascata.pidEscravo)" value=""/>
+                                    <br>
+                                    <label for="select_pid_filtro">Filtro Integrativo:</label>
+                                    <select class="" name="select_pid_filtro" ng-model="pidCascata.pidEscravo.filtro">
+                                        <option value="0">Sem filtro</option>
+                                        <option value="1">Back-calculation</option>
+                                        <option value="2">Condicional</option>
+                                    </select>
+                                    <br>
+
+                                    <label for="talt" ng-show="pidCascata.pidEscravo.filtro == 1">Talt:</label>
+                                    <input class="pidparam" type="text" name="talt" ng-model="pidCascata.pidEscravo.talt"
+                                        ng-change="" value="" ng-show="pidCascata.pidEscravo.filtro == 1"/>
+                                </div>
+
+                                <div ng-hide="pidCascata.isPIDSelected(pidCascata.pidEscravo, '0') || pidCascata.isPIDSelected(pidCascata.pidEscravo, '1')">
+                                    <label for="kd">KD:</label>
+                                    <input class="pidparam" type="text" name="kd" ng-model="pidCascata.pidEscravo.kd"
+                                        ng-change="pidCascata.atualizarParamTD(pidCascata.pidEscravo); pidCascata.atualizarParamTalt(pidCascata.pidEscravo)"value=""/>
+                                    <label for="td">TD:</label>
+                                    <input class="pidparam" type="text" name="td" ng-model="pidCascata.pidEscravo.td"
+                                        ng-change="pidCascata.atualizarParamKD(pidCascata.pidEscravo); pidCascata.atualizarParamTalt(pidCascata.pidEscravo)" value=""/>
+                                    <br>
+                                </div>
+                            </div>
                         </div>
                         <div id="div_oe" ng-show="ctrlConfig.isCtrlSelected(4)" class="">
                             Observador de Estados
