@@ -60,7 +60,7 @@
             }
             if (vetAnalise[8] == 1) {
                 dadosVisuais += '\tErro de Regime: ' + vetAnalise[9];
-            } 
+            }
 
             $('#div_stat').html(dadosVisuais);
 
@@ -301,7 +301,7 @@
 
     function setPIDPID() {
         chartControle.addSeries({
-            name: 'Sinal Gerado',
+            name: 'Erro M.',
             tooltip: {
                 enabled: false
             },
@@ -313,7 +313,115 @@
             turboThreshold: qtdPontos
         });
         chartControle.addSeries({
-            name: 'Sinal Saturado',
+            name: 'Ação P. M.',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartControle.addSeries({
+            name: 'Ação I. M.',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartControle.addSeries({
+            name: 'Ação D. M.',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartControle.addSeries({
+            name: 'Controle M.',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartControle.addSeries({
+            name: 'Erro E.',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartControle.addSeries({
+            name: 'Ação P. E.',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartControle.addSeries({
+            name: 'Ação I. E.',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartControle.addSeries({
+            name: 'Ação D. E.',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartControle.addSeries({
+            name: 'Controle E.',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartControle.addSeries({
+            name: 'Controle Saturado',
             tooltip: {
                 enabled: false
             },
@@ -339,6 +447,18 @@
         });
         chartNivel.addSeries({
             name: 'Nível 2',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartNivel.addSeries({
+            name: 'Referência',
             tooltip: {
                 enabled: false
             },
@@ -523,6 +643,19 @@
         };
     });
 
+    app.factory('PIDParamMestre', function() {
+        return {
+            pid_selected: '0',
+            filtro: '0',
+            kp: 0,
+            ki: 0,
+            ti: 0,
+            kd: 0,
+            td: 0,
+            talt: 0
+        };
+    });
+
     app.controller('ConexaoController', function(ConexaoParam) {
         this.ip = ConexaoParam.ip;
         this.porta = ConexaoParam.porta;
@@ -550,7 +683,7 @@
         }
     });
 
-    app.controller('CtrlConfigController', function(ConexaoParam, ControleParam, PIDParam) {
+    app.controller('CtrlConfigController', function(ConexaoParam, ControleParam, PIDParam, PIDParamMestre) {
 
         this.canal_selected = ConexaoParam.canal_selected;
         this.leitura_um = ControleParam.leitura_um;
@@ -647,6 +780,18 @@
                 setPID();
                 break;
                 case 3:
+                this.ctrl_param.params = ' ' + PIDParamMestre.kp +
+                ' ' + PIDParamMestre.ki +
+                ' ' + PIDParamMestre.kd +
+                ' ' + (PIDParamMestre.pid_selected == 4 ? 1 : 0) +
+                ' ' + PIDParamMestre.filtro +
+                ' ' + PIDParamMestre.talt +
+                ' ' + PIDParam.kp +
+                ' ' + PIDParam.ki +
+                ' ' + PIDParam.kd +
+                ' ' + (PIDParam.pid_selected == 4 ? 1 : 0) +
+                ' ' + PIDParam.filtro +
+                ' ' + PIDParam.talt;
                 setPIDPID();
                 break;
                 case 4:
@@ -687,6 +832,18 @@
                 ' ' + PIDParam.talt;
                 break;
                 case 3:
+                this.ctrl_param.params = ' ' + PIDParamMestre.kp +
+                ' ' + PIDParamMestre.ki +
+                ' ' + PIDParamMestre.kd +
+                ' ' + (PIDParamMestre.pid_selected == 4 ? 1 : 0) +
+                ' ' + PIDParamMestre.filtro +
+                ' ' + PIDParamMestre.talt
+                ' ' + PIDParam.kp +
+                ' ' + PIDParam.ki +
+                ' ' + PIDParam.kd +
+                ' ' + (PIDParam.pid_selected == 4 ? 1 : 0) +
+                ' ' + PIDParam.filtro +
+                ' ' + PIDParam.talt;
                 break;
                 case 4:
                 break;
@@ -788,6 +945,72 @@
         this.isPIDSelected = function(pidOpt) {
             return this.pidParam.pid_selected === pidOpt;
         }
+    });
+
+    app.controller('PidCascataController', function(PIDParam, PIDParamMestre) {
+        this.pidMestre = PIDParamMestre;
+        this.pidEscravo = PIDParam;
+
+        this.isPIDSelected = function(pid, pidOpt) {
+            return pid.pid_selected === pidOpt;
+        };
+
+        this.atualizarParam = function (pid) {
+            if (this.kp != 0){
+                this.atualizarParamTI(pid);
+                this.atualizarParamKI(pid);
+                this.atualizarParamTD(pid);
+                this.atualizarParamKD(pid);
+                this.atualizarParamTalt(pid);
+            }
+        };
+
+        this.atualizarParamTI = function (pid) {
+            if (pid.kp != 0 && pid.ki != 0) {
+                pid.ti= pid.kp / pid.ki;
+            } else {
+                pid.ti = 0;
+            }
+        };
+
+        this.atualizarParamKI = function (pid) {
+            if (pid.kp != 0 && pid.ki != 0) {
+                pid.ki = pid.kp / pid.ti;
+            } else {
+                pid.ki = 0;
+            }
+        };
+
+        this.atualizarParamTD = function (pid) {
+            if (pid.kp != 0 && pid.kd != 0) {
+                pid.td = pid.kd / pid.kp;
+            } else {
+                pid.td = 0;
+            }
+        };
+        this.atualizarParamKD = function (pid) {
+            if (pid.kp != 0 && pid.ti != 0) {
+                pid.kd = pid.kp * pid.td;
+            } else {
+                pid.kd = 0;
+            }
+        };
+
+        this.atualizarParamTalt = function (pid) {
+            if (pid.kd == 0) {
+                pid.talt = Math.sqrt(1/pid.ki);
+            } else {
+                pid.talt = Math.sqrt(pid.kd/pid.ki);
+            }
+        };
+
+        this.limparForm = function(pid) {
+            for (var param in pid) {
+                if (pid.hasOwnProperty(param) && param != 'pid_selected' && param != 'filtro') {
+                    pid[param] = 0;
+                }
+            }
+        };
     });
 
     var menuOpen = false;
