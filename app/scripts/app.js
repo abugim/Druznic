@@ -43,26 +43,39 @@
                     for (i = 0; i < chartNivel.series.length; i++) {
                         chartNivel.series[i].addPoint({x: tempo, y: parseFloat(vetNivel[i])}, false, (chartNivel.series[i].data.length > 1200), false);
                     }
+
+                    // console.log(chartControle.xAxis);
+                    if (chartControle.xAxis[0].min && chartControle.series[0].data.length > 1200) {
+                        delete chartControle.xAxis[0].min;
+                        delete chartNivel.xAxis[0].min;
+                    } else {
+                        chartControle.xAxis.min = 0;
+                        chartNivel.xAxis.min = 0;
+                    }
+
+                    if (Array.isArray(vetAnalise) && vetAnalise.length != 0) {
+                        var dadosVisuais = 'Nível 1: ' + n1 + '\tNível 2: ' + n2;
+                        if (vetAnalise[0] == 1) {
+                            dadosVisuais += '\tTempo de pico: ' + vetAnalise[1];
+                        }
+                        if (vetAnalise[2] == 1) {
+                            dadosVisuais += '\tSobre sinal: ' + vetAnalise[3];
+                        }
+                        if (vetAnalise[4] == 1) {
+                            dadosVisuais += '\tTempo de subida: ' + vetAnalise[5];
+                        }
+                        if (vetAnalise[6] == 1) {
+                            dadosVisuais += '\tTempo de acomodação: ' + vetAnalise[7];
+                        }
+                        if (vetAnalise[8] == 1) {
+                            dadosVisuais += '\tErro de Regime: ' + vetAnalise[9];
+                        }
+
+                    }
+                    $('#div_stat').html(dadosVisuais);
+
                 }
             }
-            var dadosVisuais = 'Nível 1: ' + n1 + '\tNível 2: ' + n2;
-            if (vetAnalise[0] == 1) {
-                dadosVisuais += '\tTempo de pico: ' + vetAnalise[1];
-            }
-            if (vetAnalise[2] == 1) {
-                dadosVisuais += '\tSobre sinal: ' + vetAnalise[3];
-            }
-            if (vetAnalise[4] == 1) {
-                dadosVisuais += '\tTempo de subida: ' + vetAnalise[5];
-            }
-            if (vetAnalise[6] == 1) {
-                dadosVisuais += '\tTempo de acomodação: ' + vetAnalise[7];
-            }
-            if (vetAnalise[8] == 1) {
-                dadosVisuais += '\tErro de Regime: ' + vetAnalise[9];
-            }
-
-            $('#div_stat').html(dadosVisuais);
 
             if (!freeze_global.freeze){
                 chartControle.redraw();
@@ -137,7 +150,7 @@
             turboThreshold: qtdPontos
         });
         chartControle.addSeries({
-            name: 'Erro Saturado',
+            name: 'Controle Saturado',
             tooltip: {
                 enabled: false
             },
@@ -592,7 +605,7 @@
 
     app.factory('ConexaoParam', function() {
         return {
-            ip: '10.13.99.69',
+            ip: '127.0.0.1',
             porta: '20081',
             escrita: '0',
             canal_selected: [true, true, false, false, false, false, false, false]
@@ -1052,7 +1065,7 @@
     $('#div_chart_um').highcharts({
         chart: {
             type: 'line',
-            animation: false, // don't animate in old IE
+            animation: false,
             marginRight: 10,
             events: {
                 load: function() {
@@ -1065,6 +1078,8 @@
         },
         xAxis: {
             type: 'datetime',
+            floor: 0,
+            minRange: 120000,
             dateTimeLabelFormats: {
                 millisecond: '%M:%S',
                 second: '%M:%S',
@@ -1080,6 +1095,8 @@
             title: {
                 text: 'Tensão (V)'
             },
+            minRange: 4,
+            startOnTick: true,
             plotLines: [{
                 value: 0,
                 width: 1,
@@ -1088,10 +1105,6 @@
         },
         tooltip: {
             enabled: false
-            // formatter: function() {
-            //     return '<b>' + this.series.name + '</b><br/>' +
-            //         Highcharts.numberFormat(this.y, 2);
-            // }
         },
         legend: {
             enabled: true
@@ -1103,7 +1116,7 @@
     $('#div_chart_dois').highcharts({
         chart: {
             type: 'line',
-            animation: false, // don't animate in old IE
+            animation: false,
             marginRight: 10,
             events: {
                 load: function() {
@@ -1116,6 +1129,8 @@
         },
         xAxis: {
             type: 'datetime',
+            floor: 0,
+            minRange: 120000,
             dateTimeLabelFormats: {
                 millisecond: '%M:%S',
                 second: '%M:%S',
@@ -1131,6 +1146,8 @@
             title: {
                 text: 'Nível (cm)'
             },
+            max: 30,
+            minRange: 30,
             plotLines: [{
                 value: 0,
                 width: 1,
@@ -1139,10 +1156,6 @@
         },
         tooltip: {
             enabled: false
-            // formatter: function() {
-            //     return '<b>' + this.series.name + '</b><br/>' +
-            //         Highcharts.numberFormat(this.y, 2);
-            // }
         },
         legend: {
             enabled: true
