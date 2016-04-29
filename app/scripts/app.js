@@ -772,10 +772,10 @@
             }
 
             msg += ' ' + this.ctrl_param.tipo_ctrl +
+                    ' ' + this.ctrl_param.flagVarControle +
                     ' ' + this.ctrl_param.faixaSubida +
                     ' ' + this.ctrl_param.faixaAcomodacao +
-                    ' ' + this.ctrl_param.unidadeSobressinal +
-                    ' ' + this.ctrl_param.flagVarControle;
+                    ' ' + this.ctrl_param.unidadeSobressinal;
             switch (this.ctrl_param.tipo_ctrl) {
                 case 0:
                 setMA();
@@ -1147,7 +1147,8 @@
                 text: 'Nível (cm)'
             },
             max: 30,
-            minRange: 30,
+            min: 0,
+            // minRange: 30,
             plotLines: [{
                 value: 0,
                 width: 1,
