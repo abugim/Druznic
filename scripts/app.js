@@ -7,7 +7,7 @@
     var isConectado = false;
 
     function pedirEstado() {
-        setTimeout(function functionName() {
+        setTimeout(function() {
             ws.send(3);
             pedirEstado();
         }, 100);
@@ -534,6 +534,30 @@
             data: [],
             turboThreshold: qtdPontos
         });
+        chartNivel.addSeries({
+            name: 'Nível 1 Estimado',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartNivel.addSeries({
+            name: 'Nível 2 Estimado',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
     }
 
     function setSR() {
@@ -669,6 +693,16 @@
         };
     });
 
+    app.factory('OEParam', function() {
+        return {
+            polos: {
+                x: [0, 0],
+                y: [0, 0]
+            },
+            L: [[0], [0]]
+        };
+    });
+
     app.controller('ConexaoController', function(ConexaoParam) {
         this.ip = ConexaoParam.ip;
         this.porta = ConexaoParam.porta;
@@ -696,7 +730,7 @@
         }
     });
 
-    app.controller('CtrlConfigController', function(ConexaoParam, ControleParam, PIDParam, PIDParamMestre) {
+    app.controller('CtrlConfigController', function(ConexaoParam, ControleParam, PIDParam, PIDParamMestre, OEParam) {
 
         this.canal_selected = ConexaoParam.canal_selected;
         this.leitura_um = ControleParam.leitura_um;
@@ -743,6 +777,11 @@
 
         this.selectCtrl = function(ctrlOpt) {
             this.ctrl_param.tipo_ctrl = ctrlOpt;
+            if (ctrlOpt == 4) {
+                this.onda.tipo = '0';
+                this.onda.amp = 15;
+                this.ctrl_param.flagVarControle = '1';
+            }
         };
 
         this.isCtrlSelected = function(ctrlOpt) {
@@ -808,6 +847,8 @@
                 setPIDPID();
                 break;
                 case 4:
+                this.ctrl_param.params = ' ' + OEParam.L[0][0] +
+                ' ' + OEParam.L[0][1];
                 setOE();
                 break;
                 case 5:
@@ -859,6 +900,8 @@
                 ' ' + PIDParam.talt;
                 break;
                 case 4:
+                this.ctrl_param.params = ' ' + OEParam.L[0][0] +
+                ' ' + OEParam.L[0][1];
                 break;
                 case 5:
                 break;
@@ -1021,6 +1064,62 @@
             for (var param in pid) {
                 if (pid.hasOwnProperty(param) && param != 'pid_selected' && param != 'filtro') {
                     pid[param] = 0;
+                }
+            }
+        };
+    });
+
+    app.controller('OEController', function(OEParam) {
+        this.polos = OEParam.polos;
+        this.L = OEParam.L;
+        this.img = false;
+        this.realDiff = false;
+
+
+        this.calcularL = function() {
+            if (this.polos.x[0] != '' && this.polos.x[1] != '' &&
+                this.polos.y[0] != '' && this.polos.y[1] != '' &&
+                !isNaN(this.polos.x[0]) && !isNaN(this.polos.x[1]) &&
+                !isNaN(this.polos.y[0]) && !isNaN(this.polos.y[1])) {
+                this.L = L(this.polos);
+                // this.checarPolos();
+            }
+        };
+
+        this.calcularPolos = function() {
+            if (this.L[0][0] != '' && this.L[1][0] != '' &&
+                !isNaN(this.L[0][0]) && !isNaN(this.L[1][0])) {
+                this.polos = polos(this.L);
+                console.log(this.polos);
+                this.polos.x[0] = - this.polos.x[0];
+                this.polos.x[1] = - this.polos.x[1];
+                this.polos.y[0] = Math.abs(this.polos.y[0]);
+                this.polos.y[1] = Math.abs(this.polos.y[1]);
+                if (typeof(this.polos.y) == 'undefined') {
+                    this.polos.y = [0, 0];
+                }
+                console.log(this.polos);
+                // this.checarPolos();
+            }
+        };
+
+        this.checarPolos = function(polo) {
+            if (Math.sqrt(Math.pow(this.polos.x[0], 2) + Math.pow(this.polos.y[0], 2)) < 1 &&
+                Math.sqrt(Math.pow(this.polos.x[1], 2) + Math.pow(this.polos.y[1], 2)) < 1) {
+                    console.log('in');
+                $('#div_oe').addClass('in').removeClass('out');
+            } else {
+                console.log('out');
+                $('#div_oe').addClass('out').removeClass('in');
+            }
+            if (this.polos.x[0] != this.polos.x[1] && this.polos.x[0] != 0 && this.polos.x[1] != 0) {
+                this.realDiff = true;
+                this.polos.y = [0, 0];
+            } else {
+                this.realDiff = false;
+                if (this.polos.y[polo] != 0) {
+                    this.polos.x[(polo + 1) % 2] = this.polos.x[polo];
+                    this.polos.y[(polo + 1) % 2] = this.polos.y[polo];
                 }
             }
         };

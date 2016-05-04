@@ -75,56 +75,59 @@
                     <input ng-click="ctrlConfig.secarTanque()" type="button" value="Secar Tanque" />
                 </div>
                 <div id="div_menu" class="align_center">
+                    <!-- div Configurações de Onda -->
                     <div id="div_onda" ng-controller="OndaConfigController as ondaConfig" class="align_right">
                         <form class="" action="index.html" method="post">
-                            <label for="ondas">Tipo de onda: </label>
-                            <select class="" ng-model="ondaConfig.onda.tipo" ng-change="ondaConfig.limparForm()" name="ondas">
-                                <option value="0">Degrau</option>
-                                <option value="1">Senoidal</option>
-                                <option value="2">Quadrada</option>
-                                <option value="3">Dente de Serra</option>
-                                <option value="4">Aleatória</option>
-                            </select>
+                            <fieldset ng-disabled="ctrlConfig.isCtrlSelected(4)">
+                                <label for="ondas">Tipo de onda: </label>
+                                <select class="" ng-model="ondaConfig.onda.tipo" ng-change="ondaConfig.limparForm()" name="ondas">
+                                    <option value="0">Degrau</option>
+                                    <option value="1">Senoidal</option>
+                                    <option value="2">Quadrada</option>
+                                    <option value="3">Dente de Serra</option>
+                                    <option value="4">Aleatória</option>
+                                </select>
 
-                            <div id="div_onda_degrau" ng-show="ondaConfig.isOndaSelected('0')" class="">
-                                <label for="degrau_amp">Amplitude: </label>
-                                <input ng-model="ctrlConfig.onda.amp"type="text" name="degrau_amp" value="">
-                                <br>
-                            </div>
-
-                            <div id="div_onda_periodica"
-                                    ng-show="ondaConfig.isOndaSelected('1') || ondaConfig.isOndaSelected('2') || ondaConfig.isOndaSelected('3')"
-                                    class="">
-                                    <label for="periodica_amp">Amplitude: </label>
-                                    <input ng-model="ctrlConfig.onda.amp"type="text" name="periodica_amp" value="">
-
+                                <div id="div_onda_degrau" ng-show="ondaConfig.isOndaSelected('0')" class="">
+                                    <label for="degrau_amp">Amplitude: </label>
+                                    <input ng-model="ctrlConfig.onda.amp"type="text" name="degrau_amp" value="">
                                     <br>
+                                </div>
 
-                                    <label for="periodica_periodo">Periodo: </label>
-                                    <input ng-model="ctrlConfig.onda.periodo"type="text" name="periodica_periodo" value="">
+                                <div id="div_onda_periodica"
+                                        ng-show="ondaConfig.isOndaSelected('1') || ondaConfig.isOndaSelected('2') || ondaConfig.isOndaSelected('3')"
+                                        class="">
+                                        <label for="periodica_amp">Amplitude: </label>
+                                        <input ng-model="ctrlConfig.onda.amp"type="text" name="periodica_amp" value="">
 
+                                        <br>
+
+                                        <label for="periodica_periodo">Periodo: </label>
+                                        <input ng-model="ctrlConfig.onda.periodo"type="text" name="periodica_periodo" value="">
+
+                                        <br>
+
+                                        <label for="periodica_offset">Offset: </label>
+                                        <input ng-model="ctrlConfig.onda.offset"type="text" name="periodica_offset" value="">
+                                        <br>
+                                </div>
+
+                                <div id="div_onda_aleatoria" ng-show="ondaConfig.isOndaSelected('4')" class="">
+
+                                    <label for="aleatoria_amp_sup">Amplitude superior: </label>
+                                    <input ng-model="ctrlConfig.onda.amp_sup"type="text" name="aleatoria_amp_sup" value="">
                                     <br>
-
-                                    <label for="periodica_offset">Offset: </label>
-                                    <input ng-model="ctrlConfig.onda.offset"type="text" name="periodica_offset" value="">
+                                    <label for="aleatoria_amp_inf">Amplitude inferior: </label>
+                                    <input ng-model="ctrlConfig.onda.amp_inf"type="text" name="aleatoria_amp_inf" value="">
                                     <br>
-                            </div>
-
-                            <div id="div_onda_aleatoria" ng-show="ondaConfig.isOndaSelected('4')" class="">
-
-                                <label for="aleatoria_amp_sup">Amplitude superior: </label>
-                                <input ng-model="ctrlConfig.onda.amp_sup"type="text" name="aleatoria_amp_sup" value="">
-                                <br>
-                                <label for="aleatoria_amp_inf">Amplitude inferior: </label>
-                                <input ng-model="ctrlConfig.onda.amp_inf"type="text" name="aleatoria_amp_inf" value="">
-                                <br>
-                                <label for="aleatoria_periodo_sup">Periodo superior: </label>
-                                <input ng-model="ctrlConfig.onda.periodo_sup"type="text" name="aleatoria_periodo_sup" value="">
-                                <br>
-                                <label for="aleatoria_periodo_inf">Periodo inferior: </label>
-                                <input ng-model="ctrlConfig.onda.periodo_inf"type="text" name="aleatoria_periodo_inf" value="">
-                                <br>
-                            </div>
+                                    <label for="aleatoria_periodo_sup">Periodo superior: </label>
+                                    <input ng-model="ctrlConfig.onda.periodo_sup"type="text" name="aleatoria_periodo_sup" value="">
+                                    <br>
+                                    <label for="aleatoria_periodo_inf">Periodo inferior: </label>
+                                    <input ng-model="ctrlConfig.onda.periodo_inf"type="text" name="aleatoria_periodo_inf" value="">
+                                    <br>
+                                </div>
+                            </fieldset>
 
                             <div ng-show="ondaConfig.isOndaSelected('0')||ondaConfig.isOndaSelected('2')||ondaConfig.isOndaSelected('4')">
                                 <label for="select-subida">Faixa tempo de subida: </label>
@@ -152,6 +155,7 @@
                         </form>
                     </div>
 
+                    <!-- div Configurações de Controle -->
                     <div id="div_ctrl" class="align_left">
                         <label for="sel_nivel_um">Nivel 1:</label>
                         <select class="" name="sel_nivel_um"  ng-model="ctrlConfig.leitura_um"
@@ -163,12 +167,15 @@
                             ng-options="c.opt for c in ctrlConfig.getOptions2() track by c.id">
                         </select>
 
+                        <!-- select Varivel de controle -->
                         <label for="sel_var_controle">Variável de controle:</label>
-                        <select class="" name="sel_nivel_dois" ng-model="ctrlConfig.ctrl_param.flagVarControle">
+                        <select class="" name="sel_nivel_dois" ng-disabled="ctrlConfig.isCtrlSelected(4)" ng-model="ctrlConfig.ctrl_param.flagVarControle">
                             <option value="0">Nível 1</option>
                             <option value="1">Nível 2</option>
                         </select>
 
+
+                        <!-- div PID -->
                         <div id="div_conf_pid" ng-show="ctrlConfig.isCtrlSelected(2)"
                             ng-controller="PIDConfigController as pidConfig" class="">
 
@@ -219,6 +226,7 @@
                             </div>
                         </div>
 
+                        <!-- div Cachoeira -->
                         <div id="div_conf_pidc" class=""
                             ng-show="ctrlConfig.isCtrlSelected(3)"
                             ng-controller="PidCascataController as pidCascata">
@@ -322,15 +330,45 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="div_oe" ng-show="ctrlConfig.isCtrlSelected(4)" class="">
-                            Observador de Estados
+
+                        <!-- div Observador de estados -->
+                        <div id="div_oe"
+                            ng-show="ctrlConfig.isCtrlSelected(4)"
+                            ng-controller="OEController as oeController"
+                            class="">
+                            <div id="polos">
+                                <b>POLOS</b></br>
+                                P1:
+                                <input class="param_numerico" type="text" name="real1"
+                                        ng-model="oeController.polos.x[0]" ng-change="oeController.checarPolos(0); oeController.calcularL()" />
+                                +<input class="param_numerico" type="text" name="img1"
+                                        ng-model="oeController.polos.y[0]" ng-change="oeController.checarPolos(0); oeController.calcularL()"
+                                        ng-disabled="oeController.realDiff" />i</br>
+                                P2:
+                                <input class="param_numerico" type="text" name="real2"
+                                        ng-model="oeController.polos.x[1]" ng-change="oeController.checarPolos(1); oeController.calcularL()" />
+                                        -<input class="param_numerico" type="text" name="img2"
+                                        ng-model="oeController.polos.y[1]" ng-change="oeController.checarPolos(1); oeController.calcularL()"
+                                        ng-disabled="oeController.realDiff" />i</br>
+                            </div>
+                            <div id="matriz_l">
+                                <b>L</b></br>
+                                L1: <input class="param_numerico" type="text" name="l1"
+                                            ng-model="oeController.L[0][0]" ng-change="oeController.calcularPolos(); oeController.checarPolos()" /></br>
+                                L2: <input class="param_numerico" type="text" name="l2"
+                                            ng-model="oeController.L[1][0]" ng-change="oeController.calcularPolos(); oeController.checarPolos()" /></br>
+                            </div>
                         </div>
+
+                        <!-- div Seguidor de Refer -->
                         <div id="div_sr" ng-show="ctrlConfig.isCtrlSelected(5)" class="">
                             Seguidor de referência
                         </div>
 
 
                     </div>
+
+                    <!-- div Enviar -->
                     <div id="div_enviar" class="">
                         <input type="button" ng-click="ctrlConfig.enviar()" value="Enviar">
                         <input type="button" ng-click="ctrlConfig.atualizar()" value="Atualizar">
@@ -356,6 +394,8 @@
 
         </div>
         <script src="scripts/angular.min.js"></script>
+        <script src="scripts/util/numeric-1.2.6.min.js"></script>
+        <script src="scripts/observador.js"></script>
         <script src="scripts/app.js"></script>
         <script src="scripts/diretivas.js"></script>
     </body>
