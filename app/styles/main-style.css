@@ -6,6 +6,19 @@ div {
     width: 50px;
 }
 
+.param_numerico {
+    text-align: right;
+    width: 70px;
+}
+
+.out {
+    background-color: red;
+}
+
+.in {
+    background-color: transparent;
+}
+
 html,body { height: 100%; margin: 0px; padding: 0px; }
 
 .align_center {
@@ -60,6 +73,33 @@ html,body { height: 100%; margin: 0px; padding: 0px; }
     height: 100%;
 }
 
+.escravo {
+    float: right;
+    width: 50%;
+    height: 100%;
+}
+
+#div_ctrl {
+    padding: 12px;
+}
+
+#polos {
+    /*float: left;*/
+    /*width: 50%;*/
+    height: 100%;
+}
+
+#matriz_l {
+    /*float: right;*/
+    /*width: 50%;*/
+    height: 100%;
+}
+
+#div_oe div {
+    margin: 0px 12px;
+    display: inline-block;
+}
+
 #div_ctrl {
     background-color: lightgray;
     float: right;
@@ -67,11 +107,6 @@ html,body { height: 100%; margin: 0px; padding: 0px; }
     height: 100%;
 }
 
-.escravo {
-    float: right;
-    width: 50%;
-    height: 100%;
-}
 
 #div_enviar{
     clear: both;
