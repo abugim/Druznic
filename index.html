@@ -360,9 +360,45 @@
                             </div>
                         </div>
 
-                        <!-- div Seguidor de Refer -->
-                        <div id="div_sr" ng-show="ctrlConfig.isCtrlSelected(5)" class="">
-                            Seguidor de referência
+                        <!-- div Seguidor de Referência -->
+                        <div id="div_sr" ng-show="ctrlConfig.isCtrlSelected(5)"
+                            ng-show="ctrlConfig.isCtrlSelected(4)"
+                            ng-controller="SRController as srController"
+                            class="">
+                            <div id="polos">
+                                <b>POLOS</b></br>
+                                P1:
+                                <input class="param_numerico" type="text" name="real2"
+                                        ng-model="srController.polos.x[0]"
+                                        ng-change="srController.checarPolos(-1); srController.calcularK()" />
+                                </br>
+
+                                P2:
+                                <input class="param_numerico" type="text" name="real1"
+                                        ng-model="srController.polos.x[1]"
+                                        ng-change="srController.checarPolos(0); srController.calcularK()" />
+                                +<input class="param_numerico" type="text" name="img1"
+                                        ng-model="srController.polos.y[1]"
+                                        ng-change="srController.checarPolos(0); srController.calcularK()"
+                                        ng-disabled="srController.realDiff" />i</br>
+                                P3:
+                                <input class="param_numerico" type="text" name="real2"
+                                        ng-model="srController.polos.x[2]"
+                                        ng-change="srController.checarPolos(1); srController.calcularK()" />
+                                -<input class="param_numerico" type="text" name="img2"
+                                        ng-model="srController.polos.y[2]"
+                                        ng-change="srController.checarPolos(1); srController.calcularK()"
+                                        ng-disabled="srController.realDiff" />i</br>
+                            </div>
+                            <div id="matriz_k">
+                                <b>K</b></br>
+                                k1: <input class="param_numerico" type="text" name="k1"
+                                            ng-model="srController.K[0][2]" ng-change="srController.calcularPolos(); srController.checarPolos()" /></br>
+                                k21: <input class="param_numerico" type="text" name="k21"
+                                            ng-model="srController.K[0][0]" ng-change="srController.calcularPolos(); srController.checarPolos()" /></br>
+                                k22: <input class="param_numerico" type="text" name="k22"
+                                            ng-model="srController.K[0][1]" ng-change="srController.calcularPolos(); srController.checarPolos()" /></br>
+                            </div>
                         </div>
 
 
@@ -396,6 +432,7 @@
         <script src="scripts/angular.min.js"></script>
         <script src="scripts/util/numeric-1.2.6.min.js"></script>
         <script src="scripts/observador.js"></script>
+        <script src="scripts/seguidor.js"></script>
         <script src="scripts/app.js"></script>
         <script src="scripts/diretivas.js"></script>
     </body>
