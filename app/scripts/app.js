@@ -32,7 +32,7 @@
                     var vetAnalise;
                     if (est.length == 4 && est[3] != '') {
                         vetAnalise = est[3].split(',');
-                        console.log(vetAnalise);
+                        // console.log(vetAnalise);
                     }
                     n1 = vetNivel[0];
                     n2 = vetNivel[1];
@@ -703,6 +703,16 @@
         };
     });
 
+    app.factory('SRParam', function() {
+        return {
+            polos: {
+                x: [0, 0, 0],
+                y: [0, 0, 0]
+            },
+            K: [[0, 0, 0]]
+        };
+    });
+
     app.controller('ConexaoController', function(ConexaoParam) {
         this.ip = ConexaoParam.ip;
         this.porta = ConexaoParam.porta;
@@ -848,7 +858,7 @@
                 break;
                 case 4:
                 this.ctrl_param.params = ' ' + OEParam.L[0][0] +
-                ' ' + OEParam.L[0][1];
+                ' ' + OEParam.L[1][0];
                 setOE();
                 break;
                 case 5:
@@ -901,7 +911,7 @@
                 break;
                 case 4:
                 this.ctrl_param.params = ' ' + OEParam.L[0][0] +
-                ' ' + OEParam.L[0][1];
+                ' ' + OEParam.L[1][0];
                 break;
                 case 5:
                 break;
@@ -1075,7 +1085,6 @@
         this.img = false;
         this.realDiff = false;
 
-
         this.calcularL = function() {
             if (this.polos.x[0] != '' && this.polos.x[1] != '' &&
                 this.polos.y[0] != '' && this.polos.y[1] != '' &&
@@ -1089,7 +1098,7 @@
         this.calcularPolos = function() {
             if (this.L[0][0] != '' && this.L[1][0] != '' &&
                 !isNaN(this.L[0][0]) && !isNaN(this.L[1][0])) {
-                this.polos = polos(this.L);
+                this.polos = polosObservador(this.L);
                 console.log(this.polos);
                 this.polos.x[0] = - this.polos.x[0];
                 this.polos.x[1] = - this.polos.x[1];
@@ -1112,14 +1121,80 @@
                 console.log('out');
                 $('#div_oe').addClass('out').removeClass('in');
             }
-            if (this.polos.x[0] != this.polos.x[1] && this.polos.x[0] != 0 && this.polos.x[1] != 0) {
+            if (this.polos.x[0] != 0 && this.polos.x[1] != 0 &&
+                this.polos.x[0] != '' && this.polos.x[1] != '' &&
+                this.polos.x[0] != this.polos.x[1]) {
                 this.realDiff = true;
                 this.polos.y = [0, 0];
             } else {
                 this.realDiff = false;
-                if (this.polos.y[polo] != 0) {
-                    this.polos.x[(polo + 1) % 2] = this.polos.x[polo];
+                if (this.polos.y[0] != 0 || this.polos.y[1] != 0 ||
+                    this.polos.y[0] != '' || this.polos.y[1] != '') {
+                        if (this.polos.x[polo] == 0) {
+                            this.polos.x = [0, 0];
+                        } else {
+                            this.polos.x[(polo + 1) % 2] = this.polos.x[polo];
+                        }
                     this.polos.y[(polo + 1) % 2] = this.polos.y[polo];
+                }
+            }
+        };
+    });
+
+    app.controller('SRController', function(SRParam) {
+        this.polos = SRParam.polos;
+        this.K = SRParam.K;
+        this.img = false;
+        this.realDiff = false;
+
+        this.calcularK = function() {
+            if (!isNaN(this.polos.x[0]) && !isNaN(this.polos.x[1]) && !isNaN(this.polos.x[2]) &&
+                !isNaN(this.polos.y[0]) && !isNaN(this.polos.y[1])) {
+                this.K = K(this.polos);
+                this.K[0][0] = this.K[0][0].toFixed(4);
+                this.K[0][1] = this.K[0][1].toFixed(4);
+                this.K[0][2] = this.K[0][2].toFixed(4);
+            }
+        };
+
+        this.calcularPolos = function() {
+            if (!isNaN(this.K[0][0]) && !isNaN(this.K[0][1]) && !isNaN(this.K[0][2])) {
+                this.polos = polosSeguidor(this.K);
+                this.polos.x[0] = this.polos.x[0].toFixed(4);
+                this.polos.x[1] = this.polos.x[1].toFixed(4);
+                this.polos.x[2] = this.polos.x[2].toFixed(4);
+                if (typeof(this.polos.y) == 'undefined') {
+                    this.polos.y = [0, 0, 0];
+                } else {
+                    this.polos.y[1] = Math.abs(this.polos.y[1].toFixed(4));
+                    this.polos.y[2] = Math.abs(this.polos.y[2].toFixed(4));
+                }
+            }
+        };
+
+        this.checarPolos = function(polo) {
+            if (Math.abs(this.polos.x[0]) < 1 &&
+                Math.sqrt(Math.pow(this.polos.x[1], 2) + Math.pow(this.polos.y[1], 2)) < 1 &&
+                Math.sqrt(Math.pow(this.polos.x[2], 2) + Math.pow(this.polos.y[2], 2)) < 1) {
+                $('#div_sr').addClass('in').removeClass('out');
+            } else {
+                $('#div_sr').addClass('out').removeClass('in');
+            }
+            if (this.polos.x[1] != this.polos.x[2] && this.polos.x[1] != '' && this.polos.x[2] != '') {
+                this.realDiff = true;
+                this.polos.y = [0, 0, 0];
+            } else {
+                this.realDiff = false;
+                if (polo != -1) {
+                    if ((this.polos.y[1] != 0 && this.polos.y[1] != '') ||
+                        (this.polos.y[2] != 0 && this.polos.y[2] != '')) {
+                        if (this.polos.x[polo + 1] == '') {
+                            this.polos.x = [this.polos.x[0], 0, 0];
+                        } else {
+                            this.polos.x[(polo + 1) % 2 + 1] = this.polos.x[polo + 1];
+                        }
+                        this.polos.y[(polo + 1) % 2 + 1] = this.polos.y[polo + 1];
+                    }
                 }
             }
         };

@@ -100,6 +100,11 @@ html,body { height: 100%; margin: 0px; padding: 0px; }
     display: inline-block;
 }
 
+#div_sr div {
+    margin: 0px 12px;
+    display: inline-block;
+}
+
 #div_ctrl {
     background-color: lightgray;
     float: right;
