@@ -70,7 +70,6 @@
                         if (vetAnalise[8] == 1) {
                             dadosVisuais += '\tErro de Regime: ' + vetAnalise[9];
                         }
-
                     }
                     $('#div_stat').html(dadosVisuais);
 
@@ -562,7 +561,7 @@
 
     function setSR() {
         chartControle.addSeries({
-            name: 'Sinal Gerado',
+            name: 'Controle',
             tooltip: {
                 enabled: false
             },
@@ -574,7 +573,7 @@
             turboThreshold: qtdPontos
         });
         chartControle.addSeries({
-            name: 'Sinal Saturado',
+            name: 'Controle Saturado',
             tooltip: {
                 enabled: false
             },
@@ -585,7 +584,18 @@
             data: [],
             turboThreshold: qtdPontos
         });
-
+        chartControle.addSeries({
+            name: 'Erro',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
         chartNivel.addSeries({
             name: 'Nível 1',
             tooltip: {
@@ -600,6 +610,18 @@
         });
         chartNivel.addSeries({
             name: 'Nível 2',
+            tooltip: {
+                enabled: false
+            },
+            marker: {
+                enabled: false
+            },
+            shadow: false,
+            data: [],
+            turboThreshold: qtdPontos
+        });
+        chartNivel.addSeries({
+            name: 'Referência',
             tooltip: {
                 enabled: false
             },
@@ -740,7 +762,7 @@
         }
     });
 
-    app.controller('CtrlConfigController', function(ConexaoParam, ControleParam, PIDParam, PIDParamMestre, OEParam) {
+    app.controller('CtrlConfigController', function(ConexaoParam, ControleParam, PIDParam, PIDParamMestre, OEParam, SRParam) {
 
         this.canal_selected = ConexaoParam.canal_selected;
         this.leitura_um = ControleParam.leitura_um;
@@ -862,6 +884,8 @@
                 setOE();
                 break;
                 case 5:
+                this.ctrl_param.params = ' ' + SRParam.K[0][0] +
+                ' ' + SRParam.K[0][1] + ' ' + SRParam.K[0][2];
                 setSR();
                 break;
                 default:
@@ -914,6 +938,8 @@
                 ' ' + OEParam.L[1][0];
                 break;
                 case 5:
+                this.ctrl_param.params = ' ' + SRParam.K[0][0] +
+                ' ' + SRParam.K[0][1] + ' ' + SRParam.K[0][2];
                 break;
                 default:
             }
@@ -1091,7 +1117,11 @@
                 !isNaN(this.polos.x[0]) && !isNaN(this.polos.x[1]) &&
                 !isNaN(this.polos.y[0]) && !isNaN(this.polos.y[1])) {
                 this.L = L(this.polos);
-                // this.checarPolos();
+                OEParam.L = this.L;
+                console.log('L');
+                console.log(this.L);
+                console.log('OEParam');
+                console.log(OEParam.L);
             }
         };
 
@@ -1108,7 +1138,6 @@
                     this.polos.y = [0, 0];
                 }
                 console.log(this.polos);
-                // this.checarPolos();
             }
         };
 
@@ -1151,6 +1180,7 @@
             if (!isNaN(this.polos.x[0]) && !isNaN(this.polos.x[1]) && !isNaN(this.polos.x[2]) &&
                 !isNaN(this.polos.y[0]) && !isNaN(this.polos.y[1])) {
                 this.K = K(this.polos);
+                SRParam.K = this.K;
                 this.K[0][0] = this.K[0][0].toFixed(4);
                 this.K[0][1] = this.K[0][1].toFixed(4);
                 this.K[0][2] = this.K[0][2].toFixed(4);
