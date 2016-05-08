@@ -9,17 +9,17 @@ var M = numeric.inv([[-0.0065, 0, 0.0296], [0.00656, -0.0065, 0.0000963], [0.006
 
 function K(polos) {
     var k = (numeric.dot([[0, 0, 1]], numeric.dot(WcaugInv, qcSeguidor(polos))));
-    return numeric.dot(numeric.add(k, [[0, 0, 1]]) , M);
+    return numeric.dot(numeric.add(k, [[0, 0, 1]]), M);
 }
 
 function polosSeguidor(K) {
-    console.log(numeric.eig(numeric.sub(Gaug, numeric.dot(Haug, K))).lambda);
+    // console.log(numeric.eig(numeric.sub(Gaug, numeric.dot(Haug, K))).lambda);
     return numeric.eig(numeric.sub(Gaug, numeric.dot(Haug, K))).lambda;
 }
 
 function qcSeguidor(polos) {
-    var a = Number(polos.x[0]) + Number(polos.x[1]) + Number(polos.x[2]);
-    var b = ((Number(polos.x[0]) * Number(polos.x[1]) + Number(polos.y[0]) * Number(polos.y[1]))) + ((Number(polos.x[0]) + Number(polos.x[1])) * Number(polos.x[2]));
-    var c = (Number(polos.x[0]) * Number(polos.x[1]) + Number(polos.y[0]) * Number(polos.y[1])) * Number(polos.x[2]);
-    return numeric.add(G3aug, numeric.add(numeric.mul(a, G2aug), numeric.add(numeric.mul(b, Gaug), numeric.mul(c, Iaug))));
+    var aAug = Number(polos.x[1]) + Number(polos.x[2]) + Number(polos.x[0]);
+    var bAug = ((Number(polos.x[1]) * Number(polos.x[2]) + Number(polos.y[1]) * Number(polos.y[2]))) + ((Number(polos.x[1]) + Number(polos.x[2])) * Number(polos.x[0]));
+    var cAug = (Number(polos.x[1]) * Number(polos.x[2]) + Number(polos.y[1]) * Number(polos.y[2])) * Number(polos.x[0]);
+    return numeric.add(G3aug, numeric.add(numeric.mul(aAug, G2aug), numeric.add(numeric.mul(bAug, Gaug), numeric.mul(cAug, Iaug))));
 }
