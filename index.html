@@ -21,8 +21,12 @@
                             <label for="ip">IP: </label>
                             <input type="text" name="ip" ng-model="conexaoParam.ip">
 
+                            </br>
+
                             <label for="porta">Porta: </label>
                             <input type="text" name="porta" ng-model="conexaoParam.porta">
+
+                            </br>
 
                             <label for="sel_escrita">Canal escrita: </label>
                             <select ng-model="conexaoParam.escrita" class="" name="sel_esctria">
@@ -35,8 +39,13 @@
                                 <option value="6">Canal 6</option>
                                 <option value="7">Canal 7</option>
                             </select>
+
+                            </br>
+                            </br>
+
                             <label for="check_leitura">Leitura: </label>
 
+                            </br>
 
                             <input type="checkbox" name="canal_0" ng-model="conexaoParam.canal_selected[0]">
                             <label for="canal_0">Canal 0</label>
@@ -44,16 +53,24 @@
                             <label for="canal_1">Canal 1</label>
                             <input type="checkbox" name="canal_2" ng-model="conexaoParam.canal_selected[2]">
                             <label for="canal_2">Canal 2</label>
+
+                            </br>
+
                             <input type="checkbox" name="canal_3" ng-model="conexaoParam.canal_selected[3]">
                             <label for="canal_3">Canal 3</label>
                             <input type="checkbox" name="canal_4" ng-model="conexaoParam.canal_selected[4]">
                             <label for="canal_4">Canal 4</label>
                             <input type="checkbox" name="canal_5" ng-model="conexaoParam.canal_selected[5]">
                             <label for="canal_5">Canal 5</label>
+
+                            </br>
+
                             <input type="checkbox" name="canal_6" ng-model="conexaoParam.canal_selected[6]">
                             <label for="canal_6">Canal 6</label>
                             <input type="checkbox" name="canal_7" ng-model="conexaoParam.canal_selected[7]">
                             <label for="canal_7">Canal 7</label>
+
+                            </br>
 
                             <input id="btn_connect" ng-click="conexaoParam.conectar()" type="button" value="{{conexaoParam.txtConectar}}" />
                         </form>
@@ -369,24 +386,24 @@
                                 <b>POLOS</b></br>
                                 P1:
                                 <input class="param_numerico" type="text" name="real2"
-                                        ng-model="srController.polos.x[0]"
+                                        ng-model="srController.polos.x[2]"
                                         ng-change="srController.checarPolos(-1); srController.calcularK()" />
                                 </br>
 
                                 P2:
                                 <input class="param_numerico" type="text" name="real1"
-                                        ng-model="srController.polos.x[1]"
+                                        ng-model="srController.polos.x[0]"
                                         ng-change="srController.checarPolos(0); srController.calcularK()" />
                                 +<input class="param_numerico" type="text" name="img1"
-                                        ng-model="srController.polos.y[1]"
+                                        ng-model="srController.polos.y[0]"
                                         ng-change="srController.checarPolos(0); srController.calcularK()"
                                         ng-disabled="srController.realDiff" />i</br>
                                 P3:
                                 <input class="param_numerico" type="text" name="real2"
-                                        ng-model="srController.polos.x[2]"
+                                        ng-model="srController.polos.x[1]"
                                         ng-change="srController.checarPolos(1); srController.calcularK()" />
                                 -<input class="param_numerico" type="text" name="img2"
-                                        ng-model="srController.polos.y[2]"
+                                        ng-model="srController.polos.y[1]"
                                         ng-change="srController.checarPolos(1); srController.calcularK()"
                                         ng-disabled="srController.realDiff" />i</br>
                             </div>
