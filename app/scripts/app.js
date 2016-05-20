@@ -652,6 +652,7 @@
     app.factory('ConexaoParam', function() {
         return {
             ip: '127.0.0.1',
+            // ip: '10.13.99.69',
             porta: '20081',
             escrita: '0',
             canal_selected: [true, true, false, false, false, false, false, false]
@@ -1112,58 +1113,51 @@
         this.realDiff = false;
 
         this.calcularL = function() {
-            if (this.polos.x[0] != '' && this.polos.x[1] != '' &&
-                this.polos.y[0] != '' && this.polos.y[1] != '' &&
-                !isNaN(this.polos.x[0]) && !isNaN(this.polos.x[1]) &&
+            // console.log('L');
+            if (!isNaN(this.polos.x[0]) && !isNaN(this.polos.x[1]) &&
                 !isNaN(this.polos.y[0]) && !isNaN(this.polos.y[1])) {
                 this.L = L(this.polos);
                 OEParam.L = this.L;
-                console.log('L');
-                console.log(this.L);
-                console.log('OEParam');
-                console.log(OEParam.L);
+                // console.log(this.L);
+                // console.log('OEParam');
+                // console.log(OEParam.L);
             }
         };
 
         this.calcularPolos = function() {
-            if (this.L[0][0] != '' && this.L[1][0] != '' &&
-                !isNaN(this.L[0][0]) && !isNaN(this.L[1][0])) {
+            if (!isNaN(this.L[0][0]) && !isNaN(this.L[1][0])) {
                 this.polos = polosObservador(this.L);
-                console.log(this.polos);
-                this.polos.x[0] = - this.polos.x[0];
-                this.polos.x[1] = - this.polos.x[1];
-                this.polos.y[0] = Math.abs(this.polos.y[0]);
-                this.polos.y[1] = Math.abs(this.polos.y[1]);
+                // console.log(this.polos);
+                this.polos.x[0] = this.polos.x[0].toFixed(4);
+                this.polos.x[1] = this.polos.x[1].toFixed(4);
                 if (typeof(this.polos.y) == 'undefined') {
                     this.polos.y = [0, 0];
+                } else {
+                    this.polos.y[0] = Math.abs(this.polos.y[0]).toFixed(4);
+                    this.polos.y[1] = Math.abs(this.polos.y[1]).toFixed(4);
                 }
-                console.log(this.polos);
             }
         };
 
         this.checarPolos = function(polo) {
             if (Math.sqrt(Math.pow(this.polos.x[0], 2) + Math.pow(this.polos.y[0], 2)) < 1 &&
                 Math.sqrt(Math.pow(this.polos.x[1], 2) + Math.pow(this.polos.y[1], 2)) < 1) {
-                    console.log('in');
                 $('#div_oe').addClass('in').removeClass('out');
             } else {
-                console.log('out');
                 $('#div_oe').addClass('out').removeClass('in');
             }
-            if (this.polos.x[0] != 0 && this.polos.x[1] != 0 &&
-                this.polos.x[0] != '' && this.polos.x[1] != '' &&
-                this.polos.x[0] != this.polos.x[1]) {
+            if (this.polos.x[0] != this.polos.x[1] && this.polos.x[0] != '' && this.polos.x[1] != '') {
                 this.realDiff = true;
                 this.polos.y = [0, 0];
             } else {
                 this.realDiff = false;
-                if (this.polos.y[0] != 0 || this.polos.y[1] != 0 ||
-                    this.polos.y[0] != '' || this.polos.y[1] != '') {
-                        if (this.polos.x[polo] == 0) {
-                            this.polos.x = [0, 0];
-                        } else {
-                            this.polos.x[(polo + 1) % 2] = this.polos.x[polo];
-                        }
+                if ((this.polos.y[0] != 0 && this.polos.y[0] != '') ||
+                    (this.polos.y[1] != 0 && this.polos.y[1] != '')) {
+                    if (this.polos.x[polo] == '') {
+                        this.polos.x = [0, 0];
+                    } else {
+                        this.polos.x[(polo + 1) % 2] = this.polos.x[polo];
+                    }
                     this.polos.y[(polo + 1) % 2] = this.polos.y[polo];
                 }
             }
@@ -1196,34 +1190,34 @@
                 if (typeof(this.polos.y) == 'undefined') {
                     this.polos.y = [0, 0, 0];
                 } else {
+                    this.polos.y[0] = Math.abs(this.polos.y[0].toFixed(4));
                     this.polos.y[1] = Math.abs(this.polos.y[1].toFixed(4));
-                    this.polos.y[2] = Math.abs(this.polos.y[2].toFixed(4));
                 }
             }
         };
 
         this.checarPolos = function(polo) {
-            if (Math.abs(this.polos.x[0]) < 1 &&
-                Math.sqrt(Math.pow(this.polos.x[1], 2) + Math.pow(this.polos.y[1], 2)) < 1 &&
-                Math.sqrt(Math.pow(this.polos.x[2], 2) + Math.pow(this.polos.y[2], 2)) < 1) {
+            if (Math.abs(this.polos.x[2]) < 1 &&
+                Math.sqrt(Math.pow(this.polos.x[0], 2) + Math.pow(this.polos.y[0], 2)) < 1 &&
+                Math.sqrt(Math.pow(this.polos.x[1], 2) + Math.pow(this.polos.y[1], 2)) < 1) {
                 $('#div_sr').addClass('in').removeClass('out');
             } else {
                 $('#div_sr').addClass('out').removeClass('in');
             }
-            if (this.polos.x[1] != this.polos.x[2] && this.polos.x[1] != '' && this.polos.x[2] != '') {
+            if (this.polos.x[0] != this.polos.x[1] && this.polos.x[0] != '' && this.polos.x[1] != '') {
                 this.realDiff = true;
                 this.polos.y = [0, 0, 0];
             } else {
                 this.realDiff = false;
                 if (polo != -1) {
-                    if ((this.polos.y[1] != 0 && this.polos.y[1] != '') ||
-                        (this.polos.y[2] != 0 && this.polos.y[2] != '')) {
-                        if (this.polos.x[polo + 1] == '') {
-                            this.polos.x = [this.polos.x[0], 0, 0];
+                    if ((this.polos.y[0] != 0 && this.polos.y[0] != '') ||
+                        (this.polos.y[1] != 0 && this.polos.y[1] != '')) {
+                        if (this.polos.x[polo] == '' || this.polos.x[polo] == 0) {
+                            this.polos.x = [0, 0, this.polos.x[2]];
                         } else {
-                            this.polos.x[(polo + 1) % 2 + 1] = this.polos.x[polo + 1];
+                            this.polos.x[(polo + 1) % 2] = this.polos.x[polo];
                         }
-                        this.polos.y[(polo + 1) % 2 + 1] = this.polos.y[polo + 1];
+                        this.polos.y[(polo + 1) % 2] = this.polos.y[polo];
                     }
                 }
             }
